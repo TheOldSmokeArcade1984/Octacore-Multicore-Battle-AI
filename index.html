@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>OCTACORE : MultiCore Battle AI</title>
+
+    <!-- SEO & AI CRAWLER METADATA -->
+    <meta name="description" content="IT: OCTACORE : MultiCore Battle AI. Un rompicapo 3D a fosfori verdi in stile retro-hacker. Allinea i tuoi dati, inganna l'IA locale e hackera il nucleo. EN: A green phosphor 3D puzzle in retro-hacker style. Align your data, trick the local AI, and hack the core.">
+    <meta name="keywords" content="puzzle game 3D, retro gaming, hacker game, fosfori verdi, green phosphor, tic tac toe 3D, IA locale, local AI, TheOldSmokeArcade1984, HTML5 game, cyberpunk puzzle, browser game, PWA">
+    <meta name="author" content="TheOldSmokeArcade1984">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="theme-color" content="#000800">
+    <meta name="application-name" content="OCTACORE">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="OCTACORE">
+
+    <meta name="CCBot" content="index, follow">
+    <meta name="GPTBot" content="index, follow">
+    <meta name="anthropic-ai" content="index, follow">
+
+    <!-- INTERNATIONAL SEO (HREFLANG) -->
+    <link rel="alternate" hreflang="it" href="https://theoldsmokearcade1984.github.io/octacore/?lang=it">
+    <link rel="alternate" hreflang="en" href="https://theoldsmokearcade1984.github.io/octacore/?lang=en">
+    <link rel="alternate" hreflang="es" href="https://theoldsmokearcade1984.github.io/octacore/?lang=es">
+    <link rel="alternate" hreflang="fr" href="https://theoldsmokearcade1984.github.io/octacore/?lang=fr">
+    <link rel="alternate" hreflang="de" href="https://theoldsmokearcade1984.github.io/octacore/?lang=de">
+    <link rel="alternate" hreflang="ja" href="https://theoldsmokearcade1984.github.io/octacore/?lang=ja">
+    <link rel="alternate" hreflang="zh" href="https://theoldsmokearcade1984.github.io/octacore/?lang=zh">
+    <link rel="alternate" hreflang="mn" href="https://theoldsmokearcade1984.github.io/octacore/?lang=mn">
+    <link rel="alternate" hreflang="x-default" href="https://theoldsmokearcade1984.github.io/octacore/">
+
+    <!-- OPEN GRAPH -->
+    <meta property="og:title" content="OCTACORE : MultiCore Battle AI">
+    <meta property="og:description" content="IT: Sfida l'Intelligenza Artificiale locale in questo puzzle 3D cyberpunk. EN: Challenge the local AI in this cyberpunk 3D puzzle.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://theoldsmokearcade1984.github.io/octacore/"> 
+    <meta property="og:image" content="https://theoldsmokearcade1984.github.io/octacore/icon-512.jpg">
+    <meta property="og:site_name" content="TheOldSmokeArcade1984">
+    <meta property="og:locale" content="it_IT">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta property="og:locale:alternate" content="fr_FR">
+    <meta property="og:locale:alternate" content="de_DE">
+    <meta property="og:locale:alternate" content="ja_JP">
+    <meta property="og:locale:alternate" content="zh_CN">
+    <meta property="og:locale:alternate" content="mn_MN">
+
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@TheOldSmokeArcade1984">
+    <meta name="twitter:creator" content="@TheOldSmokeArcade1984">
+    <meta name="twitter:title" content="OCTACORE : MultiCore Battle AI">
+    <meta name="twitter:description" content="Puzzle 3D Cyberpunk a fosfori verdi. Batti l'IA che impara dalle tue mosse. / 3D Cyberpunk puzzle. Beat the learning AI.">
+    <meta name="twitter:image" content="https://theoldsmokearcade1984.github.io/octacore/icon-512.jpg">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <style>
+        :root {
+            --ph-bright: #aaffaa; 
+            --ph-main: #00ff00;   
+            --ph-mid: #00cc00;    
+            --ph-dim: #003300;    
+            --bg-color: #000800;  
+            --cube-border-width: clamp(2px, 1.2vmin, 4px);
+        }
+
+        .grid-3 { --cube-size: clamp(35px, 15vmin, 90px); --spacing: clamp(70px, 26vmin, 160px); }
+        .grid-4 { --cube-size: clamp(25px, 11vmin, 65px); --spacing: clamp(55px, 20vmin, 120px); }
+
+        @media (orientation: landscape) and (max-height: 600px) {
+            .grid-3 { --cube-size: clamp(25px, 12vh, 60px); --spacing: clamp(50px, 24vh, 120px); }
+            .grid-4 { --cube-size: clamp(20px, 10vh, 50px); --spacing: clamp(40px, 20vh, 100px); }
+        }
+
+        .scene-container {
+            --cube-half: calc(var(--cube-size) / 2);
+            --laser-len: calc(var(--spacing) - calc(var(--cube-size) * 0.15));
+            --laser-thick: clamp(3px, 1.2vmin, 5px); --laser-half: calc(var(--laser-thick) / -2);
+            --p-w: calc(var(--cube-size) * 0.24); --p-h: calc(var(--cube-size) * 0.72); 
+            --p-z: calc(var(--p-w) / 2); --p-y: calc(var(--p-h) / 2);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; touch-action: pan-y; }
+
+        body { 
+            height: 100vh; width: 100vw; background: #000; color: var(--ph-main);
+            font-family: "Consolas", "Courier New", monospace; overflow: hidden; display: flex; flex-direction: column; touch-action: none;
+        }
+
+        .hidden { display: none !important; }
+
+        .main-container { flex: 1; display: flex; align-items: center; justify-content: center; width: 100vw; height: 100vh; padding: clamp(10px, 2vh, 20px); overflow: hidden; }
+        
+        .game-frame { position: relative; width: 100%; height: 100%; max-width: 1400px; max-height: 1000px; border-radius: 16px; display: flex; box-shadow: 0 0 40px rgba(0, 255, 0, 0.2); background: #000; z-index: 10; overflow: hidden; border: 1px solid var(--ph-dim); }
+        .game-frame::after { content: ''; position: absolute; inset: 0; background-color: var(--bg-color); background-image: radial-gradient(rgba(0, 255, 0, 0.15) 1px, transparent 1px); background-size: 20px 20px; background-position: center; z-index: 1; pointer-events: none;}
+        
+        .scanlines { position: absolute; inset: 0; z-index: 9998; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 2px, transparent 2px, transparent 4px); pointer-events: none; opacity: 0.8; }
+
+        /* REGOLE DI SCRITTURA VERTICALE E CENTRATURA */
+        body.lang-ja .v-text, body.lang-zh .v-text { writing-mode: vertical-rl; text-orientation: upright; text-align: left; max-height: 50vh; }
+        body.lang-mn .v-text { writing-mode: vertical-lr; text-orientation: mixed; text-align: left; max-height: 50vh; }
+
+        .typewriter-container { 
+            position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-align: center; opacity: 0; transition: opacity 0.5s ease; z-index: 15003; width: 90%; max-width: 900px;
+        }
+        .typewriter-container.active { opacity: 1; }
+        .typewriter-text { color: var(--ph-bright); text-shadow: 0 0 8px var(--ph-bright); font-size: clamp(0.9rem, 3.5vw, 1.4rem); line-height: 1.8; font-family: inherit; min-height: 100px; text-align: center; margin: 20px auto; }
+
+        /* SETUP SCREEN */
+        #setup-screen { position: absolute; inset: 0; z-index: 25000; background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
+        #setup-screen.booting { top: auto; bottom: 0; height: 8px; padding: 0; background: var(--ph-bright); box-shadow: 0 -5px 25px var(--ph-main); border: none; }
+        #setup-screen.booting > * { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+
+        .setup-title { font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: bold; color: var(--ph-bright); text-shadow: 0 0 15px var(--ph-bright); margin-bottom: 20px; letter-spacing: 2px; max-height: 35vh; }
+        .setup-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; max-width: 600px; width: 100%; }
+        .setup-grid.perf { grid-template-columns: repeat(3, 1fr); }
+        .setup-grid.lang { grid-template-columns: repeat(4, 1fr); }
+        @media (max-width: 600px) { .setup-grid.perf { grid-template-columns: 1fr; } .setup-grid.lang { grid-template-columns: repeat(2, 1fr); } }
+        @media (orientation: landscape) and (max-height: 600px) { .setup-title { margin-bottom: 10px; } .setup-grid { margin-bottom: 10px; } }
+        
+        .sys-btn { padding: 10px 15px; background: rgba(0, 255, 0, 0.05); border: 1px solid var(--ph-main); color: var(--ph-main); cursor: pointer; font-family: inherit; font-weight: bold; text-transform: uppercase; box-shadow: 0 0 10px rgba(0, 255, 0, 0.1); transition: 0.3s; z-index: 10000; pointer-events: auto; }
+        .sys-btn:hover { background: rgba(0, 255, 0, 0.2); }
+        .sys-btn:active { background: var(--ph-main); color: #000; box-shadow: 0 0 20px var(--ph-main); transform: scale(0.95); }
+        .sys-btn.active-opt { background: var(--ph-main); color: #000; box-shadow: 0 0 20px var(--ph-main); }
+        
+        #t-boot { position: relative; overflow: visible; font-size: clamp(1.2rem, 3vw, 1.5rem); margin-top: 10px; box-shadow: 0 0 15px rgba(0, 255, 0, 0.15), inset 0 0 10px var(--ph-dim); }
+        #t-boot::after { content: ''; position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%; box-shadow: 0 0 12px 4px var(--ph-bright), 0 0 25px 8px var(--ph-main); margin: -3px 0 0 -3px; animation: laser-chase 3s linear infinite; z-index: 10; }
+        @keyframes laser-chase { 0% { top: -2px; left: -2px; } 25% { top: -2px; left: calc(100% + 2px); } 50% { top: calc(100% + 2px); left: calc(100% + 2px); } 75% { top: calc(100% + 2px); left: -2px; } 100% { top: -2px; left: -2px; } }
+
+        .sys-btn.btn-alert { border-color: #ff3333 !important; color: #ff3333 !important; text-shadow: 0 0 5px #ff3333; }
+        .sys-btn.btn-alert:active { background: #ff3333 !important; color: #000 !important; box-shadow: 0 0 20px #ff3333 !important; }
+
+        /* HARDWARE SCALING */
+        body.perf-low .game-frame::after { display: none; }
+        body.perf-low .scanlines { display: none; }
+        body.perf-low .i-face, body.perf-low .face, body.perf-low .p-face { box-shadow: none; filter: none; }
+        body.perf-low .laser-link { box-shadow: none; opacity: 0.5; }
+        body.perf-low .i-text, body.perf-low .typewriter-text { text-shadow: none; }
+        body.perf-high .game-frame { animation: crt-flicker 0.15s infinite; }
+        body.perf-high .face { box-shadow: inset 0 0 30px rgba(0, 255, 0, 0.3); }
+        body.perf-high .laser-link.has-x { box-shadow: 0 0 25px var(--ph-bright); }
+        @keyframes crt-flicker { 0% { opacity: 0.98; } 50% { opacity: 1; } 100% { opacity: 0.99; } }
+
+        /* OVERLAYS MULTIPLI (CENTRATURA FLEX) */
+        .overlay-screen { position: absolute; inset: 0; z-index: 15000; background-color: transparent; display: none; justify-content: center; align-items: center; perspective: 1500px; opacity: 1; transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .overlay-screen.active { display: flex; background-color: var(--bg-color); transition: background-color 1s ease; }
+        .overlay-screen.fade-out { opacity: 0 !important; pointer-events: none; }
+        
+        #wipe-screen, #safety-screen, #tutorial-screen, #loading-screen { background-color: #000 !important; z-index: 99999; flex-direction: column; text-align: center; padding: 20px;} 
+        
+        .safety-icon { width: 80px; height: 80px; fill: none; stroke: #ff3333; stroke-width: 2; margin-bottom: 20px; animation: pulse-alert 2s infinite; }
+        @keyframes pulse-alert { 0%, 100% { filter: drop-shadow(0 0 10px #ff3333) scale(1); } 50% { filter: drop-shadow(0 0 20px #ff3333) scale(1.1); } }
+
+        .i-pyramid-wrap { position: absolute; top: 10%; left: 50%; width: 60px; height: 60px; transform: translateX(-50%); z-index: 15005; opacity: 0; }
+        #intro-screen.active .i-pyramid-wrap { opacity: 1; transition: opacity 1s 1s; animation: p-wrap-glitch 4s infinite; }
+        .i-pyramid { width: 100%; height: 100%; transform-style: preserve-3d; animation: pyr-spin 4s linear infinite; }
+        .pyr-face { position: absolute; width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 50px solid rgba(0, 255, 0, 0.15); filter: drop-shadow(0 0 5px var(--ph-bright)); transform-origin: bottom center; }
+        .p-front  { transform: translateZ(30px) rotateX(30deg); border-bottom-color: rgba(170, 255, 170, 0.9); } .p-back   { transform: rotateY(180deg) translateZ(30px) rotateX(30deg); } .p-right  { transform: rotateY(90deg) translateZ(30px) rotateX(30deg); } .p-left   { transform: rotateY(-90deg) translateZ(30px) rotateX(30deg); }
+        @keyframes pyr-spin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        @keyframes p-wrap-glitch { 0%, 92%, 100% { transform: translateX(-50%) skew(0deg); filter: none; } 94% { transform: translateX(-52%) skew(10deg); filter: brightness(2) drop-shadow(3px 0 0 var(--ph-main)); } 98% { transform: translateX(-48%) skew(-10deg); filter: invert(1); } }
+
+        .i-scale-wrap { position: absolute; width: clamp(40px, 15vmin, 100px); height: clamp(40px, 15vmin, 100px); transform-style: preserve-3d; transform: scale(0); opacity: 0; }
+        .i-rot-wrap { position: absolute; inset: 0; transform-style: preserve-3d; animation: i-spin 8s linear infinite; }
+        #intro-screen.active .i-scale-wrap { animation: i-materialize 2s 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, i-enlarge 2s 3.5s cubic-bezier(0.4, 0, 0.2, 1) forwards, i-glitch 0.8s 5.9s steps(10) forwards, i-explode 1s 6.7s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
+        
+        @keyframes i-materialize { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes i-enlarge { 0% { transform: scale(1); } 100% { transform: scale(2.5); } }
+        @keyframes i-glitch { 0% { transform: scale(2.5) translate(0, 0) skew(0deg); filter: brightness(1); } 20% { transform: scale(2.5) translate(-15px, 5px) skew(10deg); filter: brightness(3) drop-shadow(5px 5px 0px var(--ph-main)); } 40% { transform: scale(2.5) translate(15px, -5px) skew(-10deg); filter: invert(0.8); } 60% { transform: scale(2.5) translate(-5px, 15px) skew(20deg); filter: brightness(0.5); } 80% { transform: scale(2.5) translate(20px, -10px) skew(-20deg); filter: brightness(4) drop-shadow(-5px -5px 0px var(--ph-bright)); } 100% { transform: scale(2.5) translate(0, 0) skew(0deg); filter: brightness(3); } }
+        @keyframes i-explode { 0% { transform: scale(2.5); filter: brightness(3); opacity: 1; } 100% { transform: scale(8); filter: brightness(10) blur(20px); opacity: 0; } }
+        @keyframes i-spin { 0% { transform: rotateX(0deg) rotateY(0deg); } 100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(180deg); } }
+
+        .i-face { position: absolute; width: 100%; height: 100%; border: 3px solid var(--ph-bright); background: rgba(0, 255, 0, 0.1); box-shadow: inset 0 0 20px rgba(0, 255, 0, 0.4), 0 0 15px rgba(0, 255, 0, 0.6); }
+        .i-front  { transform: translateZ(calc(clamp(40px, 15vmin, 100px) / 2)); } .i-back   { transform: rotateY(180deg) translateZ(calc(clamp(40px, 15vmin, 100px) / 2)); }
+        .i-right  { transform: rotateY(90deg) translateZ(calc(clamp(40px, 15vmin, 100px) / 2)); } .i-left   { transform: rotateY(-90deg) translateZ(calc(clamp(40px, 15vmin, 100px) / 2)); }
+        .i-top    { transform: rotateX(90deg) translateZ(calc(clamp(40px, 15vmin, 100px) / 2)); } .i-bottom { transform: rotateX(-90deg) translateZ(calc(clamp(40px, 15vmin, 100px) / 2)); }
+
+        .i-projectile { position: absolute; top: 15%; left: 50%; width: 4px; height: 100px; background: #fff; box-shadow: 0 0 20px var(--ph-bright), 0 0 40px var(--ph-bright); transform: translateX(-50%); border-radius: 2px; z-index: 15001; opacity: 0; }
+        #intro-screen.active .i-projectile { animation: i-shoot-down 0.4s 5.5s cubic-bezier(0.4, 0, 1, 1) forwards; }
+        @keyframes i-shoot-down { 0% { top: 15%; opacity: 1; height: 0; } 50% { top: 30%; opacity: 1; height: 100px; } 100% { top: 50%; opacity: 0; height: 0; } }
+
+        .i-shockwave { position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; border: 6px solid var(--ph-bright); border-radius: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; z-index: 15001; box-shadow: 0 0 40px var(--ph-bright), inset 0 0 40px var(--ph-bright); }
+        #intro-screen.active .i-shockwave { animation: i-shock-ring 0.8s 5.9s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
+        @keyframes i-shock-ring { 0% { transform: translate(-50%, -50%) scale(0); opacity: 1; border-width: 30px; } 100% { transform: translate(-50%, -50%) scale(50); opacity: 0; border-width: 0px; } }
+
+        .i-text { position: absolute; top: 50%; left: 50%; z-index: 15002; color: #fff; text-shadow: 0 0 10px var(--ph-bright), 0 0 20px var(--ph-main), 0 0 40px var(--ph-main); font-size: clamp(1rem, 4vw, 3rem); font-weight: bold; letter-spacing: 0px; white-space: nowrap; transform: translate(-50%, -50%) scale(0); opacity: 0; }
+        #intro-screen.active .i-text { animation: i-text-emerge 3s 7.0s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+        @keyframes i-text-emerge { 0% { top: 50%; transform: translate(-50%, -50%) scale(0); opacity: 0; letter-spacing: -15px; filter: blur(10px); } 40% { top: 50%; transform: translate(-50%, -50%) scale(1.2); opacity: 1; letter-spacing: 1px; filter: blur(0px); } 70% { top: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; letter-spacing: 3px; filter: blur(0px); } 100% { top: 22%; transform: translate(-50%, -50%) scale(0.8); opacity: 1; letter-spacing: 5px; filter: blur(0px); } }
+
+        .cursor-wrapper { display: inline-block; width: clamp(18px, 4vw, 24px); height: clamp(18px, 4vw, 24px); vertical-align: bottom; margin-left: 8px; margin-bottom: -4px; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease; }
+        .i-cursor-cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: i-spin-fast 1.2s linear infinite; }
+        @keyframes i-spin-fast { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(180deg); } }
+        
+        .i-c-face { position: absolute; width: 100%; height: 100%; border: 2px solid var(--ph-bright); background: rgba(170, 255, 170, 0.3); box-shadow: inset 0 0 10px var(--ph-bright), 0 0 15px var(--ph-bright); }
+        .i-c-front { transform: translateZ(calc(clamp(18px, 4vw, 24px) / 2)); } .i-c-back { transform: rotateY(180deg) translateZ(calc(clamp(18px, 4vw, 24px) / 2)); }
+        .i-c-right { transform: rotateY(90deg) translateZ(calc(clamp(18px, 4vw, 24px) / 2)); } .i-c-left { transform: rotateY(-90deg) translateZ(calc(clamp(18px, 4vw, 24px) / 2)); }
+        .i-c-top { transform: rotateX(90deg) translateZ(calc(clamp(18px, 4vw, 24px) / 2)); } .i-c-bottom { transform: rotateX(-90deg) translateZ(calc(clamp(18px, 4vw, 24px) / 2)); }
+
+        @keyframes i-flash { 0%, 40%, 80% { opacity: 1; filter: brightness(3) drop-shadow(0 0 20px var(--ph-bright)); transform: scale(1.4); } 20%, 60%, 100% { opacity: 0; filter: brightness(1); transform: scale(1); } }
+        .i-flash-active { animation: i-flash 0.8s ease-in-out forwards !important; }
+
+        .wipe-buttons { display: flex; flex-direction: row; gap: 15px; margin-top: 30px; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; justify-content: center; align-items: center;}
+        .wipe-buttons.active { opacity: 1; pointer-events: auto; }
+
+        /* LOADING SCREEN (3D ORBIT) */
+        #loading-screen { z-index: 20000; flex-direction: column; background-color: rgba(0, 8, 0, 0.95) !important; }
+        .loading-scene-3d { position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; perspective: 1500px; margin-bottom: 40px; }
+        .loading-orbit { position: absolute; top: 50%; left: 50%; transform-style: preserve-3d; animation: orbit-y 2.5s linear infinite; z-index: 15010; }
+        .loading-orbit-inner { position: absolute; transform: translateZ(100px) rotateX(-20deg); transform-style: preserve-3d; }
+        @keyframes orbit-y { 0% { transform: rotateX(15deg) rotateY(0deg); } 100% { transform: rotateX(15deg) rotateY(360deg); } }
+
+        /* TERMINALE E LOGS */
+        .terminal-screen { position: absolute; inset: 0; z-index: 9999; background-color: var(--bg-color); color: var(--ph-main); padding: clamp(15px, 5vw, 50px); display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; text-shadow: 0 0 8px var(--ph-main); font-size: clamp(0.7rem, 4vw, 1.2rem); transition: opacity 0.5s ease; opacity: 1; overflow: hidden; }
+        .term-log { margin-bottom: 8px; text-transform: uppercase; animation: type-in 0.1s ease-out; word-wrap: break-word; line-height: 1.3; }
+        @keyframes type-in { 0% { opacity: 0; transform: translateX(-10px); } 100% { opacity: 1; transform: translateX(0); } }
+
+        /* HUD GIOCO DINAMICO */
+        .hud { 
+            position: absolute; top: 0; left: 0; width: 100%; 
+            padding: clamp(10px, 2vmin, 15px); display: grid; grid-template-columns: 1fr; 
+            gap: 5px; z-index: 100; pointer-events: none; 
+            background: linear-gradient(rgba(0,10,0,0.95), transparent); border-bottom: 1px solid var(--ph-dim); 
+        }
+        .hud-left, .hud-center, .hud-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hud-right { pointer-events: auto; }
+        .hud-text { font-size: clamp(0.7rem, 3.5vw, 1.2rem); text-shadow: 0 0 10px currentColor; font-weight: bold; line-height: 1.2; word-wrap: break-word; text-align: center;}
+        .sys-op { color: var(--ph-mid); font-size: clamp(0.55rem, 2.5vw, 0.8rem); margin-top: 2px; opacity: 0.8; line-height: 1.2;}
+        .level-display { color: var(--ph-bright); font-size: clamp(0.75rem, 4vw, 1.3rem); font-weight: bold; text-shadow: 0 0 10px var(--ph-bright); letter-spacing: 1px; line-height: 1.2; }
+        .wipe-btn { display: inline-block; margin-left: 8px; color: #000; background: #ff3333; padding: 2px 6px; border-radius: 4px; font-weight: bold; cursor: pointer; pointer-events: auto; text-decoration: none; font-size: 0.6rem; text-shadow: none; box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); border: 1px solid #ff0000; transition: transform 0.2s; }
+        .wipe-btn:active { transform: scale(0.95); }
+        .hud-controls { display: flex; gap: 8px; flex-direction: row; align-items: center; margin-top: 5px; }
+
+        @media (min-width: 768px), (orientation: landscape) {
+            .hud { grid-template-columns: 1fr 1fr 1fr; align-items: start; padding: 15px 30px; }
+            .hud-left { align-items: flex-start; text-align: left; }
+            .hud-center { align-items: center; text-align: center; }
+            .hud-right { align-items: flex-end; text-align: right; margin-top: 0;}
+            .hud-controls { flex-direction: row; margin-top: 0; }
+            #brain-status { margin-bottom: 8px; }
+        }
+
+        /* SCENA 3D E CUBI GIOCO */
+        .scene { flex: 1; perspective: 1800px; display: flex; align-items: center; justify-content: center; cursor: grab; touch-action: none; position: relative; z-index: 5; }
+        .pyramid-wrapper { position: relative; transform-style: preserve-3d; will-change: transform; transition: transform 0.5s ease-out; }
+
+        .laser-link { position: absolute; left: 50%; top: 50%; background: rgba(0, 255, 0, 0.15); pointer-events: none; transition: 0.5s; opacity: 0.8; }
+        .laser-link.axis-x { width: var(--laser-len); height: var(--laser-thick); margin-left: calc(var(--laser-len) / -2); margin-top: var(--laser-half); }
+        .laser-link.axis-y { width: var(--laser-thick); height: var(--laser-len); margin-top: calc(var(--laser-len) / -2); margin-left: var(--laser-half); }
+        .laser-link.axis-z { width: var(--laser-thick); height: var(--laser-len); margin-top: calc(var(--laser-len) / -2); margin-left: var(--laser-half); }
+        .laser-link.has-x { background: var(--ph-bright); box-shadow: 0 0 15px var(--ph-bright); opacity: 1; }
+        .laser-link.has-o { background: var(--ph-mid); box-shadow: 0 0 15px var(--ph-mid); opacity: 1; }
+
+        .cube { position: absolute; width: var(--cube-size); height: var(--cube-size); left: calc(var(--cube-size) / -2); top: calc(var(--cube-size) / -2); transform-style: preserve-3d; transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .faces-wrapper { position: absolute; inset: 0; transform-style: preserve-3d; }
+        .cube.drawing .faces-wrapper { animation: shell-unlock 7s cubic-bezier(0.1, 0.8, 0.2, 1) forwards; }
+        
+        .face { position: absolute; width: 100%; height: 100%; pointer-events: auto; cursor: pointer; border: var(--cube-border-width) solid rgba(0, 255, 0, 0.3); background: rgba(0,20,0,0.6); }
+        .front  { transform: translateZ(var(--cube-half)); } .back   { transform: rotateY(180deg) translateZ(var(--cube-half)); }
+        .right  { transform: rotateY(90deg) translateZ(var(--cube-half)); } .left   { transform: rotateY(-90deg) translateZ(var(--cube-half)); }
+        .top    { transform: rotateX(90deg) translateZ(var(--cube-half)); } .bottom { transform: rotateX(-90deg) translateZ(var(--cube-half)); }
+
+        .cube.state-x .face { border-color: var(--ph-bright); box-shadow: inset 0 0 15px rgba(170, 255, 170, 0.4); background: rgba(170, 255, 170, 0.1); }
+        .cube.state-o .face { border-color: var(--ph-mid); box-shadow: inset 0 0 15px rgba(0, 204, 0, 0.4); background: rgba(0, 204, 0, 0.1); }
+        .cube.win-node .face { background: rgba(170, 255, 170, 0.3); box-shadow: 0 0 40px currentColor !important; }
+
+        .data-pulse { position: absolute; width: 16px; height: 16px; left: -8px; top: -8px; border-radius: 50%; pointer-events: none; z-index: 200; }
+        .pulse-x { background: #fff; box-shadow: 0 0 15px var(--ph-bright), 0 0 30px var(--ph-bright); }
+        .pulse-o { background: #fff; box-shadow: 0 0 15px var(--ph-mid), 0 0 30px var(--ph-mid); }
+
+        .core-wrapper { position: absolute; inset: 0; transform-style: preserve-3d; animation: core-materialize 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards; }
+        @keyframes core-materialize { 0% { transform: scale3d(0.001, 0.001, 0.001); } 100% { transform: scale3d(1, 1, 1); } }
+        .core { position: absolute; inset: 0; transform-style: preserve-3d; pointer-events: none; animation: spin-core 30s linear infinite; z-index: 10; }
+        @keyframes spin-core { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); } }
+        
+        .mark-x { --core-color: var(--ph-bright); --core-bg: rgba(170, 255, 170, 0.4); }
+        .mark-o { --core-color: var(--ph-mid); --core-bg: rgba(0, 204, 0, 0.4); }
+        
+        .pillar { position: absolute; width: var(--p-w); height: var(--p-h); left: 50%; top: 50%; margin-left: calc(var(--p-w) / -2); margin-top: calc(var(--p-h) / -2); transform-style: preserve-3d; }
+        .draw-stroke { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: center; animation: draw-line 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+        .x-delay-1 { animation-delay: 0.2s; } .x-delay-2 { animation-delay: 1.0s; } .o-delay-1 { animation-delay: 0.2s; } .o-delay-2 { animation-delay: 0.8s; } .o-delay-3 { animation-delay: 1.4s; } .o-delay-4 { animation-delay: 2.0s; }
+        @keyframes draw-line { 0% { transform: scaleY(0.001); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); } }
+        
+        .p-face { position: absolute; background: var(--core-bg); border: 1px solid var(--core-color); box-shadow: inset 0 0 10px var(--core-color); }
+        .p-front, .p-back, .p-left, .p-right { width: var(--p-w); height: var(--p-h); } .p-top, .p-bottom { width: var(--p-w); height: var(--p-w); margin-top: calc((var(--p-h) - var(--p-w)) / 2); }
+        .p-front  { transform: translateZ(var(--p-z)); } .p-back   { transform: rotateY(180deg) translateZ(var(--p-z)); } .p-left   { transform: rotateY(-90deg) translateZ(var(--p-z)); } .p-right  { transform: rotateY(90deg) translateZ(var(--p-z)); } .p-top    { transform: rotateX(90deg) translateZ(var(--p-y)); } .p-bottom { transform: rotateX(-90deg) translateZ(var(--p-y)); }
+        .x-p1 { transform: rotateZ(45deg); } .x-p2 { transform: rotateZ(-45deg); }
+        .o-left   { transform: translateX(calc(var(--cube-size) * -0.32)) scaleY(0.8); } .o-right  { transform: translateX(calc(var(--cube-size) * 0.32)) scaleY(0.8); } .o-top    { transform: translateY(calc(var(--cube-size) * -0.32)) rotateZ(90deg) scaleY(0.8); } .o-bottom { transform: translateY(calc(var(--cube-size) * 0.32)) rotateZ(90deg) scaleY(0.8); }
+    </style>
+</head>
+<body class="grid-3 scene-container perf-mid lang-it">
+
+    <!-- ANDROID AUTO / SAFE DRIVING OVERLAY -->
+    <div id="safety-screen" class="overlay-screen hidden">
+        <svg class="safety-icon" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg>
+        <div class="setup-title" style="color:#ff3333; text-shadow:0 0 10px #ff3333;">SAFETY LOCK_</div>
+        <p style="margin-bottom:20px; max-width:500px; color:#fff;">
+            Vehicle display aspect ratio or Automotive environment detected.<br>
+            For your safety, DO NOT play while driving.
+        </p>
+        <button class="sys-btn" onclick="document.getElementById('safety-screen').classList.add('hidden')">I AM A PASSENGER / UNLOCK</button>
+    </div>
+
+    <!-- SCHERMATA CONFIGURAZIONE INIZIALE -->
+    <div id="setup-screen">
+        <div class="setup-title v-text" id="setup-title">INIZIALIZZAZIONE SISTEMA</div>
+        
+        <div class="setup-grid lang">
+            <button class="sys-btn active-opt" onclick="setLang('it', this)">ITA</button>
+            <button class="sys-btn" onclick="setLang('en', this)">ENG</button>
+            <button class="sys-btn" onclick="setLang('es', this)">ESP</button>
+            <button class="sys-btn" onclick="setLang('fr', this)">FRA</button>
+            <button class="sys-btn" onclick="setLang('de', this)">DEU</button>
+            <button class="sys-btn" onclick="setLang('ja', this)">日本語</button>
+            <button class="sys-btn" onclick="setLang('zh', this)">中文</button>
+            <button class="sys-btn" onclick="setLang('mn', this)">ᠮᠣᠩᠭᠣᠯ</button>
+        </div>
+
+        <div class="setup-grid perf">
+            <button class="sys-btn" onclick="setPerf('perf-low', this)" id="t-perf-low">BASSO</button>
+            <button class="sys-btn active-opt" onclick="setPerf('perf-mid', this)" id="t-perf-mid">BILANCIATO</button>
+            <button class="sys-btn" onclick="setPerf('perf-high', this)" id="t-perf-high">ULTRA</button>
+        </div>
+
+        <button class="sys-btn" onclick="startBootSequence()" id="t-boot">INIZIALIZZA SISTEMA</button>
+    </div>
+
+    <div class="main-container">
+        <div class="game-frame">
+            <div class="scanlines"></div>
+            
+            <!-- OVERLAY INTRO CINEMATICA -->
+            <div id="intro-screen" class="overlay-screen">
+                <div class="i-pyramid-wrap" id="i-pyramid-wrap">
+                    <div class="i-pyramid">
+                        <div class="pyr-face p-front"></div>
+                        <div class="pyr-face p-back"></div>
+                        <div class="pyr-face p-right"></div>
+                        <div class="pyr-face p-left"></div>
+                    </div>
+                </div>
+                <div class="i-projectile" id="i-projectile"></div>
+                <div class="i-shockwave" id="i-shockwave"></div>
+                <div class="i-text" id="i-text">THEOLDSMOKEARCADE1984</div>
+                
+                <div class="i-scale-wrap" id="i-scale-wrap">
+                    <div class="i-rot-wrap">
+                        <div class="i-face i-front"></div><div class="i-face i-back"></div>
+                        <div class="i-face i-right"></div><div class="i-face i-left"></div>
+                        <div class="i-face i-top"></div><div class="i-face i-bottom"></div>
+                    </div>
+                </div>
+                
+                <div id="i-typewriter-container" class="typewriter-container">
+                    <div id="typewriter-text" class="typewriter-text v-text"></div>
+                </div>
+            </div>
+
+            <!-- OVERLAY WIPE DATABASE SOLIDO -->
+            <div id="wipe-screen" class="overlay-screen hidden">
+                <div id="w-typewriter-container" class="typewriter-container active">
+                    <div id="w-typewriter-text" class="typewriter-text v-text"></div>
+                    <div id="w-buttons" class="wipe-buttons">
+                        <button class="sys-btn btn-alert" onclick="executeWipe()" id="t-wipe-yes">[ ESEGUI OVERRIDE ]</button>
+                        <button class="sys-btn" onclick="cancelWipe()" id="t-wipe-no">[ ANNULLA ]</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OVERLAY TUTORIAL POST-BOOT -->
+            <div id="tutorial-screen" class="overlay-screen hidden">
+                <div class="typewriter-container active">
+                    <div class="setup-title v-text" id="t-tut-title" style="color:var(--ph-main); margin-bottom:0;">SYSTEM_GUIDE</div>
+                    <div id="tut-typewriter-text" class="typewriter-text v-text" style="margin:20px;"></div>
+                    <div class="wipe-buttons active" style="margin-top:0;">
+                        <button class="sys-btn" onclick="closeTutorial()" id="t-tut-start" style="opacity:0; pointer-events:none;">[ START HACK ]</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OVERLAY LOADING 3D (PCG GENERATION) -->
+            <div id="loading-screen" class="overlay-screen hidden">
+                <div class="loading-scene-3d">
+                    <div class="i-scale-wrap" style="transform: scale(1.5); opacity: 1; position: absolute;">
+                        <div class="i-rot-wrap">
+                            <div class="i-face i-front"></div><div class="i-face i-back"></div>
+                            <div class="i-face i-right"></div><div class="i-face i-left"></div>
+                            <div class="i-face i-top"></div><div class="i-face i-bottom"></div>
+                        </div>
+                    </div>
+                    <div class="loading-orbit">
+                        <div class="loading-orbit-inner">
+                            <div class="i-pyramid" style="transform: scale(0.6);">
+                                <div class="pyr-face p-front"></div>
+                                <div class="pyr-face p-back"></div>
+                                <div class="pyr-face p-right"></div>
+                                <div class="pyr-face p-left"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="loading-text" class="setup-title v-text" style="margin-top:20px; font-size: 1.5rem; letter-spacing: 2px;"></div>
+            </div>
+
+            <!-- TERMINALE BOOT -->
+            <div id="terminal-screen" class="terminal-screen hidden">
+                <div id="term-content" class="v-text"></div><div style="margin-top: 8px;"><span class="cursor"></span></div>
+            </div>
+
+            <!-- HUD GIOCO DINAMICO -->
+            <div class="hud hidden" id="main-hud">
+                <div class="hud-left">
+                    <div class="level-display" id="hud-level">GENERATING...</div>
+                    <div class="sys-op">SYS.OP: TheOldSmokeArcade1984</div>
+                </div>
+                <div class="hud-center">
+                    <div id="status" class="hud-text" style="color:var(--ph-main)">STATUS: PRONTO</div>
+                </div>
+                <div class="hud-right">
+                    <div id="brain-status" style="color:var(--ph-dim); font-size:0.6rem;">
+                        LOCAL DB: ATTIVO
+                    </div>
+                    <div class="hud-controls">
+                        <button class="sys-btn btn-alert" onclick="triggerWipeScreen()" id="t-wipe-btn">[ WIPE DB ]</button>
+                        <button class="sys-btn" onclick="nextLevel()" id="btn-next" style="display:none; color:var(--ph-bright); border-color:var(--ph-bright);">PROSSIMO LVL</button>
+                        <button class="sys-btn" onclick="restartLevel()" id="btn-restart" style="display:none; color:var(--ph-mid); border-color:var(--ph-mid);">RIPROVA</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCENA 3D -->
+            <div class="scene" id="scene"><div class="pyramid-wrapper" id="wrapper"></div></div>
+            
+        </div>
+    </div>
+
+<script>
+    // ==========================================
+    // INTERRUTTORE DI SICUREZZA GLOBALE (DEEP CLEANUP)
+    // ==========================================
+    let gameAborted = false;
+
+    // ==========================================
+    // REGISTRAZIONE SERVICE WORKER E SAFETY
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').then(reg => console.log('SW Registered')).catch(err => console.log('SW Reg Failed', err));
+        });
+    }
+
+    window.addEventListener('load', () => {
+        let isCarDisplay = window.innerWidth > window.innerHeight * 1.8 && window.innerHeight < 600;
+        if(isCarDisplay || navigator.userAgent.includes('Android Auto')) {
+            document.getElementById('safety-screen').classList.remove('hidden');
+            document.getElementById('safety-screen').classList.add('active');
+        }
+    });
+
+    // ==========================================
+    // AUDIO PROCEDURALE
+    // ==========================================
+    const sysAudio = {
+        ctx: null,
+        init() {
+            if (!this.ctx) { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); }
+            if (this.ctx.state === 'suspended') { this.ctx.resume(); }
+        },
+        playTone(freq, type, duration, vol=0.1, glideFreq=null) {
+            if (!this.ctx) return;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type; 
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+            if(glideFreq) osc.frequency.exponentialRampToValueAtTime(glideFreq, this.ctx.currentTime + duration);
+            gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+            osc.connect(gain); gain.connect(this.ctx.destination);
+            osc.start(); osc.stop(this.ctx.currentTime + duration);
+        },
+        noise(duration, vol=0.1) {
+            if(!this.ctx) return;
+            const bufferSize = this.ctx.sampleRate * duration;
+            const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            const noise = this.ctx.createBufferSource(); noise.buffer = buffer;
+            const gain = this.ctx.createGain();
+            gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
+            noise.connect(gain); gain.connect(this.ctx.destination);
+            noise.start();
+        },
+        click() { this.playTone(800, 'square', 0.1, 0.05); },
+        type() { this.playTone(Math.random() * 200 + 1200, 'square', 0.05, 0.02); },
+        shoot(isX) { this.playTone(isX ? 600 : 400, 'sawtooth', 0.3, 0.1, 100); },
+        impact() { this.playTone(150, 'square', 0.2, 0.1, 50); this.noise(0.2, 0.2); },
+        glitch() { 
+            this.playTone(400, 'sawtooth', 0.1, 0.1, 800); 
+            setTimeout(() => this.playTone(600, 'square', 0.1, 0.1, 200), 50);
+            this.noise(0.3, 0.1);
+        },
+        win() { 
+            this.playTone(440, 'sine', 0.2, 0.1); 
+            setTimeout(() => this.playTone(554, 'sine', 0.2, 0.1), 150); 
+            setTimeout(() => this.playTone(659, 'sine', 0.4, 0.1), 300); 
+        },
+        lose() { this.playTone(200, 'sawtooth', 0.8, 0.1, 50); this.noise(0.8, 0.1); }
+    };
+
+    // ==========================================
+    // MULTILINGUA (i18n)
+    // ==========================================
+    const i18n = {
+        it: {
+            setupTitle: "INIZIALIZZAZIONE SISTEMA",
+            perfLow: "BASSO", perfMid: "BILANCIATO", perfHigh: "ULTRA", boot: "INIZIALIZZA SISTEMA",
+            sector: "SETTORE", generating: "GENERAZIONE...",
+            statusReady: "STATUS: PRONTO", statusInject: "STATUS: INIEZIONE DATI...",
+            statusCalc: "STATUS: CALCOLO TRAIETTORIA...", statusResp: "STATUS: RISPOSTA DI SISTEMA...", statusQuery: "STATUS: QUERYING LOCAL DB...",
+            winP1: "OVERRIDE MANUALE: VITTORIA P1", winAI: "SISTEMA COMPROMESSO: VITTORIA AI", draw: "STALLO TATTICO RILEVATO",
+            nextLvl: "PROSSIMO LVL", retry: "RIPROVA", wipeBtn: "[ WIPE DB ]", wipeYes: "[ ESEGUI OVERRIDE ]", wipeNo: "[ ANNULLA ]",
+            localDb: "LOCAL DB: ATTIVO",
+            manifesto: "Il Sistema osserva ma non registra.\nLa privacy è locale, la presenza è globale.\nLa libertà è nel codice che non dipende da nulla.",
+            wipeWarn: "ATTENZIONE: FORMATTAZIONE DATABASE NEURALE IN CORSO.\nI DATI DI APPRENDIMENTO E I SETTORI RISOLTI VERRANNO PERSI.\n\nPROCEDERE CON L'OVERRIDE GLOBALE?",
+            bootLogs: ["INIZIALIZZAZIONE FOSFORI VERDI...", "BYPASS FIREWALL: [ OK ]", "UPLINK QUANTICO: [ OK ]"],
+            tutorialTitle: "SYSTEM_GUIDE", tutorialBtn: "[ AVVIA HACK ]",
+            tutorialText: "OBIETTIVO: Allinea i nodi per superare le difese (3 o 4 in fila).\nCOMANDI: Trascina lo sfondo per ruotare, tocca un nodo per iniettare i dati.\nIA: Il Sistema apprende dalle tue mosse.\nWIPE DB: Formatta la memoria dell'IA e i settori completati.",
+            thinking: "STO PENSANDO..."
+        },
+        en: {
+            setupTitle: "INITIALIZE SYSTEM",
+            perfLow: "LOW", perfMid: "BALANCED", perfHigh: "ULTRA", boot: "INITIALIZE SYSTEM",
+            sector: "SECTOR", generating: "GENERATING...",
+            statusReady: "STATUS: READY", statusInject: "STATUS: DATA INJECTION...",
+            statusCalc: "STATUS: CALCULATING TRAJECTORY...", statusResp: "STATUS: SYSTEM RESPONSE...", statusQuery: "STATUS: QUERYING LOCAL DB...",
+            winP1: "MANUAL OVERRIDE: P1 WINS", winAI: "SYSTEM COMPROMISED: AI WINS", draw: "TACTICAL STALEMATE DETECTED",
+            nextLvl: "NEXT LVL", retry: "RETRY", wipeBtn: "[ WIPE DB ]", wipeYes: "[ EXECUTE OVERRIDE ]", wipeNo: "[ CANCEL ]",
+            localDb: "LOCAL DB: ACTIVE",
+            manifesto: "The System watches but does not record.\nPrivacy is local, presence is global.\nFreedom is in code that depends on nothing.",
+            wipeWarn: "WARNING: NEURAL DATABASE FORMAT IN PROGRESS.\nLEARNING DATA AND SOLVED SECTORS WILL BE LOST.\n\nPROCEED WITH GLOBAL OVERRIDE?",
+            bootLogs: ["INITIATING GREEN PHOSPHOR MODE...", "BYPASSING FIREWALLS: [ OK ]", "QUANTUM UPLINK: [ OK ]"],
+            tutorialTitle: "SYSTEM_GUIDE", tutorialBtn: "[ START HACK ]",
+            tutorialText: "OBJECTIVE: Align nodes to breach defenses (3 or 4 in a row).\nCONTROLS: Drag background to rotate, tap a node to inject data.\nAI: The System learns from your moves.\nWIPE DB: Formats AI memory and cleared sectors.",
+            thinking: "THINKING..."
+        },
+        es: {
+            setupTitle: "INICIALIZAR SISTEMA",
+            perfLow: "BAJO", perfMid: "EQUILIBRADO", perfHigh: "ULTRA", boot: "INICIALIZAR SISTEMA",
+            sector: "SECTOR", generating: "GENERANDO...",
+            statusReady: "ESTADO: LISTO", statusInject: "ESTADO: INYECCIÓN DE DATOS...",
+            statusCalc: "ESTADO: CALCULANDO TRAYECTORIA...", statusResp: "ESTADO: RESPUESTA DEL SISTEMA...", statusQuery: "ESTADO: CONSULTANDO BD LOCAL...",
+            winP1: "ANULACIÓN MANUAL: P1 GANA", winAI: "SISTEMA COMPROMETIDO: IA GANA", draw: "ESTANCAMIENTO TÁCTICO",
+            nextLvl: "SIGUIENTE NIVEL", retry: "REINTENTAR", wipeBtn: "[ BORRAR BD ]", wipeYes: "[ EJECUTAR ANULACIÓN ]", wipeNo: "[ CANCELAR ]",
+            localDb: "BD LOCAL: ACTIVA",
+            manifesto: "El Sistema observa pero no registra.\nLa privacidad es local, la presencia es global.\nLa libertad está en el código que no depende de nada.",
+            wipeWarn: "ADVERTENCIA: FORMATO DE BASE DE DATOS NEURONAL EN CURSO.\nLOS DATOS DE APRENDIZAJE SE PERDERÁN.\n\n¿PROCEDER CON LA ANULACIÓN GLOBAL?",
+            bootLogs: ["INICIANDO MODO FÓSFORO VERDE...", "OMITIENDO FIREWALLS: [ OK ]", "ENLACE CUÁNTICO: [ OK ]"],
+            tutorialTitle: "GUÍA_DEL_SISTEMA", tutorialBtn: "[ INICIAR HACK ]",
+            tutorialText: "OBJETIVO: Alinea los nodos para superar las defensas (3 o 4 en línea).\nCONTROLES: Arrastra el fondo para rotar, toca un nodo para inyectar datos.\nIA: El Sistema aprende de tus movimientos.\nWIPE DB: Formatea la memoria de la IA y los sectores superados.",
+            thinking: "PENSANDO..."
+        },
+        fr: {
+            setupTitle: "INITIALISATION SYSTÈME",
+            perfLow: "FAIBLE", perfMid: "ÉQUILIBRÉ", perfHigh: "ULTRA", boot: "INITIALISER LE SYSTÈME",
+            sector: "SECTEUR", generating: "GÉNÉRATION...",
+            statusReady: "STATUT: PRÊT", statusInject: "STATUT: INJECTION DE DONNÉES...",
+            statusCalc: "STATUT: CALCUL DE TRAJECTOIRE...", statusResp: "STATUT: RÉPONSE DU SYSTÈME...", statusQuery: "STATUT: REQUÊTE DB LOCALE...",
+            winP1: "DÉPASSEMENT MANUEL: P1 GAGNE", winAI: "SYSTÈME COMPROMIS: IA GAGNE", draw: "IMPASSE TACTIQUE",
+            nextLvl: "NIV SUIVANT", retry: "RÉESSAYER", wipeBtn: "[ EFFACER DB ]", wipeYes: "[ EXÉCUTER DÉPASSEMENT ]", wipeNo: "[ ANNULER ]",
+            localDb: "DB LOCALE: ACTIVE",
+            manifesto: "Le Système observe mais n'enregistre pas.\nLa confidentialité est locale, la présence globale.\nLa liberté est dans le code qui ne dépend de rien.",
+            wipeWarn: "ATTENTION: FORMATAGE DE LA BASE NEURONALE EN COURS.\nLES DONNÉES D'APPRENTISSAGE SERONT PERDUES.\n\nPROCÉDER AU DÉPASSEMENT GLOBAL?",
+            bootLogs: ["INITIATION DU MODE PHOSPHORE VERT...", "CONTOURNEMENT DES PARE-FEUX: [ OK ]", "LIAISON QUANTIQUE: [ OK ]"],
+            tutorialTitle: "GUIDE_SYSTÈME", tutorialBtn: "[ DÉMARRER LE HACK ]",
+            tutorialText: "OBJECTIF : Alignez les nœuds pour franchir les défenses (3 ou 4 de suite).\nCONTRÔLES : Faites glisser pour pivoter, touchez un nœud pour injecter des données.\nIA : Le système apprend de vos mouvements.\nWIPE DB : Formate la mémoire de l'IA et les secteurs effacés.",
+            thinking: "RÉFLEXION..."
+        },
+        de: {
+            setupTitle: "SYSTEM INITIALISIEREN",
+            perfLow: "NIEDRIG", perfMid: "AUSGEGLICHEN", perfHigh: "ULTRA", boot: "SYSTEM INITIALISIEREN",
+            sector: "SEKTOR", generating: "GENERIERT...",
+            statusReady: "STATUS: BEREIT", statusInject: "STATUS: DATENINJEKTION...",
+            statusCalc: "STATUS: BERECHNUNG...", statusResp: "STATUS: SYSTEMANTWORT...", statusQuery: "STATUS: LOKALE DB ABFRAGEN...",
+            winP1: "MANUELLER OVERRIDE: P1 GEWINNT", winAI: "SYSTEM KOMPROMITTIERT: KI GEWINNT", draw: "TAKITSCHES PATT",
+            nextLvl: "NÄCHSTES LVL", retry: "WIEDERHOLEN", wipeBtn: "[ DB LÖSCHEN ]", wipeYes: "[ OVERRIDE AUSFÜHREN ]", wipeNo: "[ ABBRECHEN ]",
+            localDb: "LOKALE DB: AKTIV",
+            manifesto: "Das System beobachtet, aber zeichnet nicht auf.\nPrivatsphäre ist lokal, Präsenz ist global.\nFreiheit liegt im Code, der von nichts abhängt.",
+            wipeWarn: "WARNUNG: NEURONALE DATENBANK WIRD FORMATIERT.\nLERN-DATEN GEHEN VERLOREN.\n\nMIT GLOBALEM OVERRIDE FORTFAHREN?",
+            bootLogs: ["GRÜNER PHOSPHOR MODUS INITIIERT...", "FIREWALLS UMGEHEN: [ OK ]", "QUANTEN-UPLINK: [ OK ]"],
+            tutorialTitle: "SYSTEM_HANDBUCH", tutorialBtn: "[ HACK STARTEN ]",
+            tutorialText: "ZIEL: Richten Sie Knoten aus, um die Verteidigung zu durchbrechen (3 oder 4 in einer Reihe).\nSTEUERUNG: Ziehen zum Drehen, Tippen zum Injizieren von Daten.\nKI: Das System lernt aus Ihren Zügen.\nWIPE DB: Formatiert den KI-Speicher und gelöschte Sektoren.",
+            thinking: "DENKE NACH..."
+        },
+        ja: {
+            setupTitle: "システム初期化",
+            perfLow: "低", perfMid: "中", perfHigh: "高", boot: "システム初期化",
+            sector: "セクター", generating: "生成中...",
+            statusReady: "ステータス: 準備完了", statusInject: "ステータス: データ注入...",
+            statusCalc: "ステータス: 軌道計算中...", statusResp: "ステータス: システム応答...", statusQuery: "ステータス: ローカルDB照会中...",
+            winP1: "手動オーバーライド: P1の勝利", winAI: "システム侵害: AIの勝利", draw: "戦術的膠着状態",
+            nextLvl: "次のレベル", retry: "リトライ", wipeBtn: "[ DB初期化 ]", wipeYes: "[ オーバーライド実行 ]", wipeNo: "[ キャンセル ]",
+            localDb: "ローカルDB: アクティブ",
+            manifesto: "システムは監視するが、記録はしない。\nプライバシーはローカルに、存在はグローバルに。\n自由は何にも依存しないコードの中にある。",
+            wipeWarn: "警告：ニューラルデータベースのフォーマット中。\n学習データは失われます。\n\nグローバルオーバーライドを続行しますか？",
+            bootLogs: ["グリーンフォスファーモード初期化中...", "ファイアウォールバイパス: [ OK ]", "量子アップリンク: [ OK ]"],
+            tutorialTitle: "システムガイド", tutorialBtn: "[ ハック開始 ]",
+            tutorialText: "目標: ノードを揃えて防御を突破せよ（3つまたは4つ）。\n操作: ドラッグで回転、タップでデータを注入。\nAI: システムはあなたの動きから学習する。\nWIPE DB: AIの記憶とクリアしたセクターをフォーマットする。",
+            thinking: "思考中..."
+        },
+        zh: {
+            setupTitle: "系统初始化",
+            perfLow: "低", perfMid: "平衡", perfHigh: "极高", boot: "初始化系统",
+            sector: "部门", generating: "生成中...",
+            statusReady: "状态: 就绪", statusInject: "状态: 数据注入...",
+            statusCalc: "状态: 轨迹计算中...", statusResp: "状态: 系统响应...", statusQuery: "状态: 查询本地DB...",
+            winP1: "手动覆盖: P1 获胜", winAI: "系统受损: AI 获胜", draw: "战术僵局",
+            nextLvl: "下一关", retry: "重试", wipeBtn: "[ 清除数据库 ]", wipeYes: "[ 执行覆盖 ]", wipeNo: "[ 取消 ]",
+            localDb: "本地DB: 活跃",
+            manifesto: "系统观察但不记录。\n隐私是本地的，存在是全局的。\n自由存在于不依赖任何事物的代码中。",
+            wipeWarn: "警告：神经数据库格式化中。\n学习数据将丢失。\n\n是否继续全局覆盖？",
+            bootLogs: ["正在初始化绿色荧光模式...", "绕过防火墙: [ OK ]", "建立量子链接: [ OK ]"],
+            tutorialTitle: "系统指南", tutorialBtn: "[ 开始黑客攻击 ]",
+            tutorialText: "目标：对齐节点以突破防御（连续3或4个）。\n控制：拖动以旋转，点击节点以注入数据。\nAI：系统会从你的行动中学习。\nWIPE DB：格式化AI记忆和已清除的扇区。",
+            thinking: "思考中..."
+        },
+        mn: {
+            setupTitle: "ᠰᠢᠰᠲ᠋ᠧᠮ ᠢ ᠡᠬᠢᠯᠡᠭᠦᠯᠬᠦ",
+            perfLow: "ᠪᠠᠭ᠎ᠠ", perfMid: "ᠳᠤᠮᠳᠠ", perfHigh: "ᠲᠡᠭᠦᠰ", boot: "ᠰᠢᠰᠲ᠋ᠧᠮ ᠢ ᠡᠬᠢᠯᠡᠭᠦᠯᠬᠦ",
+            sector: "ᠰᠧᠻᠲ᠋ᠣᠷ", generating: "ᠡᠭᠦᠰᠭᠡᠵᠦ ᠪᠠᠶᠢᠨ᠎ᠠ...",
+            statusReady: "ᠲᠥᠯᠥᠪ: ᠪᠡᠯᠡᠨ", statusInject: "ᠲᠥᠯᠥᠪ: ᠥᠭᠭᠦᠭᠳᠡᠯ ᠣᠷᠣᠭᠤᠯᠬᠤ...",
+            statusCalc: "ᠲᠥᠯᠥᠪ: ᠲᠣᠭᠠᠴᠠᠭᠠᠯᠠᠯ...", statusResp: "ᠲᠥᠯᠥᠪ: ᠬᠠᠷᠢᠭᠤ...", statusQuery: "ᠲᠥᠯᠥᠪ: DB ᠬᠠᠶᠢᠬᠤ...",
+            winP1: "P1 ᠢᠯᠠᠯᠠ", winAI: "AI ᠢᠯᠠᠯᠠ", draw: "ᠲᠡᠩᠴᠡᠭᠡ",
+            nextLvl: "ᠳᠠᠷᠠᠭᠠᠴᠢ ᠶᠢᠨ ᠱᠠᠲᠤ", retry: "ᠳᠠᠬᠢᠨ ᠣᠷᠣᠯᠳᠣᠬᠤ", wipeBtn: "[ DB ᠠᠷᠢᠯᠭᠠᠬᠤ ]", wipeYes: "[ ᠠᠷᠢᠯᠭᠠᠬᠤ ]", wipeNo: "[ ᠴᠤᠴᠠᠯᠠᠬᠤ ]",
+            localDb: "ᠣᠷᠣᠨ ᠨᠤᠲᠤᠭ ᠤᠨ DB: ᠢᠳᠡᠪᠬᠢᠲᠡᠢ",
+            manifesto: "ᠰᠢᠰᠲ᠋ᠧᠮ ᠠᠵᠢᠭᠯᠠᠨ᠎ᠠ ᠭᠡᠬᠦᠳᠡᠭᠡᠨ ᠪᠢᠴᠢᠬᠦ ᠦᠭᠡᠢ.\nᠬᠤᠪᠢ ᠶᠢᠨ ᠨᠢᠭᠤᠴᠠ ᠣᠷᠣᠨ ᠨᠤᠲᠤᠭ ᠲᠤ᠂ ᠣᠷᠣᠯᠴᠠᠭ᠎ᠠ ᠨᠢ ᠳᠡᠯᠡᠬᠡᠶᠢᠨᠬᠢ.\nᠡᠷᠬᠡ ᠴᠢᠯᠥᠭᠡ ᠨᠢ ᠶᠠᠭᠤᠨ ᠳᠤ ᠴᠤ ᠬᠠᠮᠢᠶᠠᠷᠤᠯ ᠦᠭᠡᠢ ᠻᠣᠳ᠋ ᠲᠤ ᠪᠠᠶᠢᠨ᠎ᠠ.",
+            wipeWarn: "ᠠᠩᠬᠠᠷᠤᠭᠤᠯᠭ᠎ᠠ: DB ᠹᠣᠷᠮᠠᠲ᠋ ᠬᠢᠵᠦ ᠪᠠᠶᠢᠨ᠎ᠠ.\nᠥᠭᠭᠦᠭᠳᠡᠯ ᠤᠰᠲᠠᠨ᠎ᠠ.\n\nᠦᠷᠭᠦᠯᠵᠢᠯᠡᠬᠦ ᠶᠦ?",
+            bootLogs: ["ᠡᠬᠢᠯᠡᠵᠦ ᠪᠠᠶᠢᠨ᠎ᠠ...", "ᠭᠠᠯᠲᠤ ᠬᠠᠨ᠎ᠠ ᠶᠢ ᠠᠯᠭᠠᠰᠠᠬᠤ: [ OK ]", "ᠬᠣᠯᠪᠣᠭᠠᠰᠤ: [ OK ]"],
+            tutorialTitle: "ᠰᠢᠰᠲ᠋ᠧᠮ ᠤᠨ ᠤᠳᠤᠷᠢᠳᠤᠯᠭ᠎ᠠ", tutorialBtn: "[ ᠡᠬᠢᠯᠡᠬᠦ ]",
+            tutorialText: "ᠵᠣᠷᠢᠯᠭ᠎ᠠ: ᠨᠣᠳ᠋ ᠢ ᠵᠢᠭᠰᠠᠭᠠᠬᠤ (3 ᠡᠰᠡᠪᠡᠯ 4).\nᠤᠳᠤᠷᠢᠳᠤᠯᠭ᠎ᠠ: ᠡᠷᠭᠢᠭᠦᠯᠬᠦ ᠶᠢᠨ ᠲᠤᠯᠠᠳᠠ ᠴᠢᠷᠴᠦ᠂ ᠥᠭᠭᠦᠭᠳᠡᠯ ᠣᠷᠣᠭᠤᠯᠬᠤ ᠶᠢᠨ ᠲᠤᠯᠠᠳᠠ ᠲᠣᠪᠰᠢᠨ᠎ᠠ ᠤᠤ.\nAI: ᠰᠢᠰᠲ᠋ᠧᠮ ᠲᠠᠨ ᠤ ᠬᠥᠳᠡᠯᠭᠡᠭᠡᠨ ᠡᠴᠡ ᠰᠤᠷᠤᠯᠴᠠᠨ᠎ᠠ.\nWIPE DB: ᠣᠶᠤᠨ ᠤᠬᠠᠭᠠᠨ ᠪᠠ ᠰᠧᠻᠲ᠋ᠣᠷ ᠢ ᠹᠣᠷᠮᠠᠲ᠋ ᠬᠢᠨ᠎ᠡ.",
+            thinking: "ᠪᠣᠳᠣᠵᠤ ᠪᠠᠶᠢᠨ᠎ᠠ..."
+        }
+    };
+
+    let lang = 'it';
+    function t(key) { return i18n[lang][key]; }
+
+    function setLang(l, btn) {
+        sysAudio.init(); sysAudio.click();
+        lang = l;
+        
+        document.body.classList.remove('lang-it', 'lang-en', 'lang-es', 'lang-fr', 'lang-de', 'lang-ja', 'lang-zh', 'lang-mn');
+        document.body.classList.add('lang-' + l);
+
+        document.querySelectorAll('.setup-grid.lang .sys-btn').forEach(b => b.classList.remove('active-opt'));
+        btn.classList.add('active-opt');
+        
+        document.getElementById('setup-title').textContent = t('setupTitle');
+        document.getElementById('t-perf-low').textContent = t('perfLow');
+        document.getElementById('t-perf-mid').textContent = t('perfMid');
+        document.getElementById('t-perf-high').textContent = t('perfHigh');
+        document.getElementById('t-boot').textContent = t('boot');
+        document.getElementById('btn-next').textContent = t('nextLvl');
+        document.getElementById('btn-restart').textContent = t('retry');
+        document.getElementById('t-wipe-btn').textContent = t('wipeBtn');
+        document.getElementById('t-wipe-yes').textContent = t('wipeYes');
+        document.getElementById('t-wipe-no').textContent = t('wipeNo');
+        document.getElementById('t-tut-title').textContent = t('tutorialTitle');
+        document.getElementById('t-tut-start').textContent = t('tutorialBtn');
+        document.getElementById('status').textContent = t('statusReady');
+        document.getElementById('loading-text').textContent = t('thinking');
+        
+        document.getElementById('hud-level').textContent = t('generating');
+        document.getElementById('brain-status').innerHTML = `${t('localDb')}`;
+    }
+
+    function setPerf(perfClass, btn) {
+        sysAudio.init(); sysAudio.click();
+        let baseClasses = document.body.className.replace(/perf-[a-z]+/g, '').trim();
+        document.body.className = `${baseClasses} ${perfClass}`;
+        document.querySelectorAll('.setup-grid.perf .sys-btn').forEach(b => b.classList.remove('active-opt'));
+        btn.classList.add('active-opt');
+    }
+
+    // ==========================================
+    // STRUTTURA CUBI E CORE
+    // ==========================================
+    const facesHTML = `<div class="faces-wrapper"><div class="face front"></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div>`;
+    const coreXHTML = `<div class="core-wrapper"><div class="core mark-x"><div class="pillar x-p1"><div class="draw-stroke x-delay-1"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar x-p2"><div class="draw-stroke x-delay-2"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div></div></div>`;
+    const coreOHTML = `<div class="core-wrapper"><div class="core mark-o"><div class="pillar o-top"><div class="draw-stroke o-delay-1"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar o-right"><div class="draw-stroke o-delay-2"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar o-bottom"><div class="draw-stroke o-delay-3"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar o-left"><div class="draw-stroke o-delay-4"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div></div></div>`;
+
+    // ==========================================
+    // DATA STORAGE & AI LEARNING
+    // ==========================================
+    const DB_KEY = 'OCTACORE_AI_DB';
+    const SOLVED_KEY = 'OCTACORE_SOLVED_LEVELS';
+    let moveHistory = []; 
+    let cubeMap = new Map(); // NUCLEO OTTIMIZZATO O(1)
+
+    function getLocalDB() { try { return JSON.parse(localStorage.getItem(DB_KEY)) || {}; } catch (e) { return {}; } }
+    function saveLocalDB(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+    function recordMove(nodeId, player) { moveHistory.push(`${player}${nodeId}`); if(moveHistory.length > 4) moveHistory.shift(); }
+
+    function getSolvedLevels() { try { return JSON.parse(localStorage.getItem(SOLVED_KEY)) || []; } catch(e) { return []; } }
+    function saveSolvedLevel(hash) { let solved = getSolvedLevels(); if(!solved.includes(hash)) { solved.push(hash); localStorage.setItem(SOLVED_KEY, JSON.stringify(solved)); } }
+
+    function updateBrainWeights(aiWon) {
+        if(moveHistory.length < 2) return;
+        let db = getLocalDB(); let stateKey = moveHistory.slice(0, -1).join('-'); let lastMove = moveHistory[moveHistory.length - 1];
+        if(!db[stateKey]) db[stateKey] = {}; if(!db[stateKey][lastMove]) db[stateKey][lastMove] = 0;
+        db[stateKey][lastMove] += aiWon ? 1 : -1; saveLocalDB(db);
+        const brainStatusEl = document.getElementById('brain-status');
+        brainStatusEl.innerHTML = `LOCAL DB: +${aiWon ? '1' : '-1'}`; 
+        brainStatusEl.style.color = "var(--ph-bright)";
+        setTimeout(() => { brainStatusEl.innerHTML = t('localDb'); brainStatusEl.style.color = "var(--ph-dim)"; }, 2000);
+    }
+
+    // ==========================================
+    // WIPE SCREEN (DEEP CLEANUP)
+    // ==========================================
+    let wipeTimeout = null;
+    
+    function triggerWipeScreen() {
+        sysAudio.click();
+        const wipeScreen = document.getElementById('wipe-screen');
+        const wText = document.getElementById('w-typewriter-text');
+        const wBtns = document.getElementById('w-buttons');
+        
+        wipeScreen.classList.remove('hidden');
+        void wipeScreen.offsetWidth; 
+        wipeScreen.classList.add('active');
+        wBtns.classList.remove('active');
+        
+        if (wipeTimeout) clearTimeout(wipeTimeout);
+        
+        wText.innerHTML = '<span id="w-content"></span><div class="cursor-wrapper" id="w-cursor"><div class="i-cursor-cube"><div class="i-c-face i-c-front"></div><div class="i-c-face i-c-back"></div><div class="i-c-face i-c-right"></div><div class="i-c-face i-c-left"></div><div class="i-c-face i-c-top"></div><div class="i-c-face i-c-bottom"></div></div></div>';
+        
+        const contentSpan = document.getElementById('w-content');
+        const message = t('wipeWarn');
+        let charIndex = 0;
+
+        function typeChar() {
+            if(charIndex < message.length) {
+                let char = message.charAt(charIndex);
+                contentSpan.innerHTML += char === '\n' ? '<br>' : char;
+                charIndex++;
+                sysAudio.type();
+                wipeTimeout = setTimeout(typeChar, 30); 
+            } else {
+                contentSpan.innerHTML += '<br><br>';
+                wBtns.classList.add('active');
+            }
+        }
+        wipeTimeout = setTimeout(typeChar, 500);
+    }
+
+    function executeWipe() {
+        sysAudio.impact();
+        document.getElementById('w-buttons').classList.remove('active');
+        const cursorEl = document.getElementById('w-cursor');
+        if(cursorEl) cursorEl.classList.add('i-flash-active'); 
+        if (wipeTimeout) clearTimeout(wipeTimeout);
+        
+        gameAborted = true; // Blocca i calcoli IA
+        
+        setTimeout(() => {
+            localStorage.removeItem(DB_KEY);
+            localStorage.removeItem(SOLVED_KEY);
+            
+            const wipeScreen = document.getElementById('wipe-screen');
+            wipeScreen.classList.remove('active');
+            wipeScreen.classList.add('hidden');
+            document.getElementById('w-typewriter-text').innerHTML = '';
+            
+            document.getElementById('main-hud').classList.add('hidden');
+            const term = document.getElementById('terminal-screen'); 
+            term.classList.add('hidden'); 
+            term.style.opacity = '1';
+            document.getElementById('term-content').innerHTML = '';
+            
+            const tutScreen = document.getElementById('tutorial-screen');
+            tutScreen.classList.remove('active');
+            tutScreen.classList.add('hidden');
+            document.getElementById('tut-typewriter-text').innerHTML = '';
+            
+            const introScreen = document.getElementById('intro-screen');
+            introScreen.classList.remove('active', 'fade-out');
+            document.getElementById('i-typewriter-container').classList.remove('active');
+            document.getElementById('typewriter-text').innerHTML = '';
+
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.remove('active');
+            loadingScreen.classList.add('hidden');
+            
+            wrapper.style.transition = 'none';
+            wrapper.innerHTML = '';
+            cubesData = []; 
+            cubeMap.clear();
+            lasersData = [];
+            currentLevelNum = 1;
+            playing = false;
+            isCinematic = false;
+            moveHistory = [];
+            lastMoveX = null;
+            lastMoveO = null;
+            
+            rotX = -20; rotY = 45; origRotX = -20; origRotY = 45; 
+            targetCamX = 0; targetCamY = 0; targetCamZ = 0; zoomScale = 1;
+            updateCamera();
+            
+            const setup = document.getElementById('setup-screen');
+            setup.classList.remove('booting');
+            setup.style.display = 'flex';
+            
+        }, 800);
+    }
+
+    function cancelWipe() {
+        sysAudio.click();
+        document.getElementById('w-buttons').classList.remove('active');
+        const cursorEl = document.getElementById('w-cursor');
+        if(cursorEl) cursorEl.style.transform = "scale(0)"; 
+        if(cursorEl) cursorEl.style.opacity = "0";
+        if (wipeTimeout) clearTimeout(wipeTimeout);
+        setTimeout(() => {
+            const wipeScreen = document.getElementById('wipe-screen');
+            wipeScreen.classList.remove('active');
+            setTimeout(() => { 
+                wipeScreen.classList.add('hidden'); 
+                document.getElementById('w-typewriter-text').innerHTML = '';
+            }, 500);
+        }, 500);
+    }
+
+    // ==========================================
+    // TUTORIAL IN-ENGINE
+    // ==========================================
+    let tutTimeout = null;
+    function showTutorial() {
+        const tutScreen = document.getElementById('tutorial-screen');
+        const tutText = document.getElementById('tut-typewriter-text');
+        const tutBtn = document.getElementById('t-tut-start');
+        
+        tutScreen.classList.remove('hidden');
+        void tutScreen.offsetWidth; 
+        tutScreen.classList.add('active');
+        tutBtn.style.opacity = '0';
+        tutBtn.style.pointerEvents = 'none';
+        
+        tutText.innerHTML = '<span id="tut-content"></span><div class="cursor-wrapper" id="tut-cursor"><div class="i-cursor-cube"><div class="i-c-face i-c-front"></div><div class="i-c-face i-c-back"></div><div class="i-c-face i-c-right"></div><div class="i-c-face i-c-left"></div><div class="i-c-face i-c-top"></div><div class="i-c-face i-c-bottom"></div></div></div>';
+        
+        const contentSpan = document.getElementById('tut-content');
+        const message = t('tutorialText');
+        let charIndex = 0;
+
+        function typeChar() {
+            if(charIndex < message.length) {
+                let char = message.charAt(charIndex);
+                contentSpan.innerHTML += char === '\n' ? '<br><br>' : char;
+                charIndex++;
+                sysAudio.type();
+                tutTimeout = setTimeout(typeChar, 35); 
+            } else {
+                contentSpan.innerHTML += '<br><br>';
+                tutBtn.style.opacity = '1';
+                tutBtn.style.pointerEvents = 'auto';
+            }
+        }
+        tutTimeout = setTimeout(typeChar, 500);
+    }
+
+    function closeTutorial() {
+        sysAudio.click();
+        const cursorEl = document.getElementById('tut-cursor');
+        if(cursorEl) cursorEl.classList.add('i-flash-active');
+        if (tutTimeout) clearTimeout(tutTimeout);
+        
+        setTimeout(() => {
+            const tutScreen = document.getElementById('tutorial-screen');
+            tutScreen.classList.remove('active');
+            setTimeout(() => { 
+                tutScreen.classList.add('hidden'); 
+                document.getElementById('tut-typewriter-text').innerHTML = '';
+                startCurrentLevel();
+            }, 500);
+        }, 600);
+    }
+
+    // ==========================================
+    // GENERATORE PROCEDURALE GEOMETRICO AVANZATO
+    // ==========================================
+    const winVectors = [ [1,0,0], [0,1,0], [0,0,1], [1,1,0], [1,-1,0], [1,0,1], [1,0,-1], [0,1,1], [0,1,-1], [1,1,1], [1,1,-1], [1,-1,1], [-1,1,1] ];
+
+    function hashNodes(nodes) { return nodes.map(n => `${n.x},${n.y},${n.z}`).sort().join('|'); }
+
+    // Ricerca Rapida Percorsi (Per il Generatore di Livelli)
+    function countWinningPaths(nodesArray, targetCount) {
+        let nodeSet = new Set(nodesArray.map(n => `${n.x},${n.y},${n.z}`));
+        let paths = 0;
+        for (let n of nodesArray) {
+            for (let v of winVectors) {
+                let count = 1;
+                for (let step = 1; step < targetCount; step++) {
+                    if (nodeSet.has(`${n.x + v[0]*step},${n.y + v[1]*step},${n.z + v[2]*step}`)) count++; 
+                    else break;
+                }
+                if (count === targetCount) paths++;
+            }
+        }
+        return paths;
+    }
+
+    function isConnected(nodesArray) {
+        if (nodesArray.length === 0) return false;
+        let nodeSet = new Set(nodesArray.map(n => `${n.x},${n.y},${n.z}`));
+        let visited = new Set(); 
+        let queue = [nodesArray[0]];
+        visited.add(`${nodesArray[0].x},${nodesArray[0].y},${nodesArray[0].z}`);
+        let count = 1;
+
+        while(queue.length > 0) {
+            let curr = queue.shift();
+            const dirs = [ [1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1] ];
+            for(let d of dirs) {
+                let key = `${curr.x + d[0]},${curr.y + d[1]},${curr.z + d[2]}`;
+                if (nodeSet.has(key) && !visited.has(key)) {
+                    visited.add(key);
+                    queue.push({x: curr.x + d[0], y: curr.y + d[1], z: curr.z + d[2]});
+                    count++;
+                }
+            }
+        }
+        return count === nodesArray.length;
+    }
+
+    function generateProceduralLevel(levelNum) {
+        let size = levelNum <= 3 ? 3 : 4; 
+        let winTarget = size; 
+        let solvedDB = getSolvedLevels();
+
+        if (levelNum === 1) {
+            let candidateNodes = [];
+            for(let x = -1; x <= 1; x++) { for(let y = -1; y <= 1; y++) { for(let z = -1; z <= 1; z++) { candidateNodes.push({x,y,z}); } } }
+            let h = hashNodes(candidateNodes);
+            return { id: levelNum, size: 3, winCondition: 3, class: 'grid-3', nodes: candidateNodes, hash: h };
+        }
+        
+        const shapes = [
+            (x, y, z, l) => true,
+            (x, y, z, l) => Math.abs(x)+Math.abs(y)+Math.abs(z) <= l * 1.8, 
+            (x, y, z, l) => Math.max(Math.abs(x), Math.abs(y), Math.abs(z)) >= l - 0.5, 
+            (x, y, z, l) => x*x + z*z <= l*l + 0.1, 
+            (x, y, z, l) => (Math.abs(x)<=0.5 && Math.abs(y)<=0.5) || (Math.abs(x)<=0.5 && Math.abs(z)<=0.5) || (Math.abs(y)<=0.5 && Math.abs(z)<=0.5), 
+            (x, y, z, l) => Math.abs(x) + Math.abs(z) <= l + 0.5 - Math.abs(y), 
+            (x, y, z, l) => Math.abs(x) + Math.abs(y) + Math.abs(z) > 1 && Math.max(Math.abs(x), Math.abs(y), Math.abs(z)) <= l, 
+            (x, y, z, l) => x + y + z <= l && x + y + z >= -l, 
+            (x, y, z, l) => Math.abs(x) === Math.abs(y) || Math.abs(y) === Math.abs(z) || Math.abs(x) === Math.abs(z) 
+        ];
+
+        let attempts = 0;
+        while(attempts < 1000) {
+            attempts++;
+            let shapeFn = shapes[Math.floor(Math.random() * shapes.length)];
+            let axisMap = [ ['x','y','z'], ['y','z','x'], ['z','x','y'], ['x','z','y'] ][Math.floor(Math.random()*4)];
+            
+            let offset = size % 2 === 0 ? 0.5 : 0; 
+            let limit = Math.floor(size / 2); 
+            let start = -limit + offset; let end = limit - offset;
+            
+            let candidateNodes = [];
+            for(let cx = start; cx <= end; cx++) { 
+                for(let cy = start; cy <= end; cy++) { 
+                    for(let cz = start; cz <= end; cz++) { 
+                        let mapped = { x: cx, y: cy, z: cz };
+                        let mx = mapped[axisMap[0]]; let my = mapped[axisMap[1]]; let mz = mapped[axisMap[2]];
+                        if(shapeFn(mx, my, mz, limit)) { candidateNodes.push({x: cx, y: cy, z: cz}); }
+                    } 
+                } 
+            }
+            
+            if (!isConnected(candidateNodes)) continue;
+            
+            let paths = countWinningPaths(candidateNodes, winTarget);
+            if (paths < 2) continue; 
+            
+            let h = hashNodes(candidateNodes);
+            if (solvedDB.includes(h)) continue;
+            
+            return { id: levelNum, size: size, winCondition: winTarget, class: `grid-${size}`, nodes: candidateNodes, hash: h };
+        }
+        
+        return { id: levelNum, size: 3, winCondition: 3, class: 'grid-3', nodes: [ {x:0,y:0,z:0},{x:1,y:0,z:0},{x:-1,y:0,z:0},{x:0,y:1,z:0},{x:0,y:-1,z:0},{x:0,y:0,z:1},{x:0,y:0,z:-1} ], hash: "fallback_" + Date.now() };
+    }
+
+    // ==========================================
+    // RILEVATORE VITTORIA E STALLO CON HASH MAP O(1)
+    // ==========================================
+    function checkWinFor(playerState) {
+        const winTarget = currentLevelData.winCondition;
+        for (let cube of cubesData) {
+            if (cube.state !== playerState) continue;
+            for (let v of winVectors) {
+                let count = 1;
+                for (let step = 1; step < winTarget; step++) {
+                    let key = `${cube.x + (v[0]*step)},${cube.y + (v[1]*step)},${cube.z + (v[2]*step)}`;
+                    let nextNode = cubeMap.get(key);
+                    if (nextNode && nextNode.state === playerState) count++;
+                    else break;
+                }
+                if (count === winTarget) return true;
+            }
+        }
+        return false;
+    }
+
+    function checkTacticalStalemate() {
+        const winTarget = currentLevelData.winCondition;
+        for (let cube of cubesData) {
+            for (let v of winVectors) {
+                let count = 1; let hasX = cube.state === 'X'; let hasO = cube.state === 'O';
+                for (let step = 1; step < winTarget; step++) {
+                    let key = `${cube.x + (v[0]*step)},${cube.y + (v[1]*step)},${cube.z + (v[2]*step)}`;
+                    let nextNode = cubeMap.get(key);
+                    if (nextNode) {
+                        count++;
+                        if (nextNode.state === 'X') hasX = true;
+                        if (nextNode.state === 'O') hasO = true;
+                    } else { break; }
+                }
+                if (count === winTarget && !(hasX && hasO)) return false; 
+            }
+        }
+        return true; 
+    }
+
+    // ==========================================
+    // CORE SYSTEM E ANIMAZIONI DI BOOT
+    // ==========================================
+    let currentLevelNum = getSolvedLevels().length + 1;
+    let currentLevelData = null;
+    const wrapper = document.getElementById('wrapper');
+    const scene = document.getElementById('scene');
+    const statusEl = document.getElementById('status');
+    
+    let cubesData = []; let lasersData = []; let playing = false; let isCinematic = false;
+    let rotX = -20, rotY = 45; let origRotX = -20, origRotY = 45; 
+    let targetCamX = 0, targetCamY = 0, targetCamZ = 0; let zoomScale = 1;
+    let dragMultiplier = 0.5; let lastMoveX = null; let lastMoveO = null;
+
+    let bootTimeout = null;
+
+    function startBootSequence() {
+        gameAborted = false;
+        sysAudio.init(); sysAudio.click();
+        
+        let docEl = document.documentElement;
+        if (docEl.requestFullscreen) docEl.requestFullscreen().catch(err => console.log(err));
+        else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen().catch(err => console.log(err));
+
+        const setup = document.getElementById('setup-screen');
+        setup.classList.add('booting');
+
+        setTimeout(() => {
+            setup.style.display = 'none'; 
+            
+            const introScreen = document.getElementById('intro-screen');
+            introScreen.classList.add('active');
+            sysAudio.playTone(150, 'sawtooth', 3.0, 0.1, 800); 
+
+            setTimeout(() => {
+                const twContainer = document.getElementById('i-typewriter-container');
+                const twText = document.getElementById('typewriter-text');
+                twContainer.classList.add('active');
+                
+                twText.innerHTML = '<span id="tw-content"></span><div class="cursor-wrapper" id="tw-cursor"><div class="i-cursor-cube"><div class="i-c-face i-c-front"></div><div class="i-c-face i-c-back"></div><div class="i-c-face i-c-right"></div><div class="i-c-face i-c-left"></div><div class="i-c-face i-c-top"></div><div class="i-c-face i-c-bottom"></div></div></div>';
+                
+                const contentSpan = document.getElementById('tw-content');
+                const message = t('manifesto');
+                let charIndex = 0;
+
+                function typeChar() {
+                    if(charIndex < message.length) {
+                        let char = message.charAt(charIndex);
+                        contentSpan.innerHTML += char === '\n' ? '<br>' : char;
+                        charIndex++;
+                        sysAudio.type();
+                        bootTimeout = setTimeout(typeChar, 45); 
+                    } else {
+                        bootTimeout = setTimeout(() => {
+                            contentSpan.innerHTML += '<br><br>'; 
+                            setTimeout(() => {
+                                const cursorEl = document.getElementById('tw-cursor');
+                                if(cursorEl) cursorEl.classList.add('i-flash-active');
+                                sysAudio.glitch();
+                                setTimeout(() => {
+                                    introScreen.classList.add('fade-out');
+                                    startTerminalBoot();
+                                    
+                                    setTimeout(() => { 
+                                        introScreen.classList.remove('active', 'fade-out'); 
+                                        document.getElementById('i-typewriter-container').classList.remove('active');
+                                        document.getElementById('typewriter-text').innerHTML = '';
+                                    }, 1000); 
+                                    
+                                }, 800); 
+                            }, 400); 
+                        }, 600); 
+                    }
+                }
+                typeChar();
+
+            }, 10500);
+        }, 1000);
+    }
+
+    function startTerminalBoot() {
+        const term = document.getElementById('terminal-screen'); 
+        const termContent = document.getElementById('term-content');
+        term.classList.remove('hidden'); term.style.opacity = '0'; termContent.innerHTML = '';
+        void term.offsetWidth; term.style.opacity = '1';
+
+        const logs = t('bootLogs');
+        let delay = 500; 
+        logs.forEach((log) => { 
+            setTimeout(() => { 
+                let div = document.createElement('div'); div.className = 'term-log'; div.innerHTML = `> ${log}`; termContent.appendChild(div); sysAudio.click();
+            }, delay); 
+            delay += 400 + Math.random() * 300; 
+        });
+        
+        setTimeout(() => { 
+            term.style.opacity = '0'; 
+            setTimeout(() => { 
+                term.classList.add('hidden'); 
+                document.getElementById('term-content').innerHTML = ''; 
+                document.getElementById('main-hud').classList.remove('hidden'); 
+                showTutorial();
+            }, 500); 
+        }, delay + 500);
+    }
+
+    function getZ(type) { 
+        let isMob = window.innerWidth < 768; 
+        let isLand = window.innerWidth > window.innerHeight;
+        if(type === 'base') return isLand && isMob ? 0.45 : (isMob ? 0.65 : 1); 
+        if(type === 'action') return isLand && isMob ? 0.6 : (isMob ? 0.9 : 2.4); 
+        return 1; 
+    }
+
+    function startCurrentLevel() {
+        gameAborted = false;
+        moveHistory = []; lastMoveX = null; lastMoveO = null;
+        cubeMap.clear();
+        
+        const loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.classList.remove('hidden');
+        loadingScreen.classList.add('active');
+        document.getElementById('loading-text').textContent = t('thinking');
+        
+        setTimeout(() => {
+            if(gameAborted) return;
+            currentLevelData = generateProceduralLevel(currentLevelNum);
+            
+            let baseClasses = document.body.className.replace(/grid-[34]/g, '').trim();
+            document.body.className = `${baseClasses} ${currentLevelData.class}`;
+            
+            document.getElementById('hud-level').textContent = `${t('sector')}_0${currentLevelData.id} : HASH_${currentLevelData.hash.substring(0,6)}`;
+            statusEl.textContent = t('statusReady'); statusEl.style.color = 'var(--ph-main)';
+            document.getElementById('btn-next').style.display = 'none'; document.getElementById('btn-restart').style.display = 'none';
+            
+            buildLevel(currentLevelData); 
+            playing = true; isCinematic = false; zoomScale = getZ('base'); updateCamera();
+            
+            setTimeout(() => {
+                if(gameAborted) return;
+                loadingScreen.classList.remove('active');
+                setTimeout(() => { if(!gameAborted) loadingScreen.classList.add('hidden'); }, 500);
+            }, 3800);
+
+        }, 100);
+    }
+
+    function restartLevel() { 
+        sysAudio.click();
+        moveHistory = []; lastMoveX = null; lastMoveO = null; cubeMap.clear();
+        statusEl.textContent = t('statusReady'); statusEl.style.color = 'var(--ph-main)';
+        document.getElementById('btn-next').style.display = 'none'; document.getElementById('btn-restart').style.display = 'none';
+        buildLevel(currentLevelData);
+        playing = true; isCinematic = false; zoomScale = getZ('base'); updateCamera();
+    }
+    
+    function nextLevel() { sysAudio.click(); currentLevelNum++; startCurrentLevel(); }
+
+    function buildLevel(lvlData) {
+        wrapper.innerHTML = ''; cubesData = []; lasersData = []; cubeMap.clear(); let index = 0;
+
+        lvlData.nodes.forEach(coord => {
+            const el = document.createElement('div'); el.className = 'cube'; el.setAttribute('data-index', index); el.innerHTML = facesHTML;
+            el.style.transform = `translate3D(calc(${coord.x} * var(--spacing)), calc(${coord.y} * var(--spacing)), calc(${coord.z} * var(--spacing)))`;
+            wrapper.appendChild(el); 
+            let cubeObj = { x: coord.x, y: coord.y, z: coord.z, el, state: null, id: index };
+            cubesData.push(cubeObj);
+            cubeMap.set(`${coord.x},${coord.y},${coord.z}`, cubeObj);
+            index++;
+        });
+
+        cubesData.forEach(cube => {
+            let nX = cubeMap.get(`${cube.x + 1},${cube.y},${cube.z}`); if(nX) createLaser(cube, nX, 'x');
+            let nY = cubeMap.get(`${cube.x},${cube.y + 1},${cube.z}`); if(nY) createLaser(cube, nY, 'y');
+            let nZ = cubeMap.get(`${cube.x},${cube.y},${cube.z + 1}`); if(nZ) createLaser(cube, nZ, 'z');
+        });
+        updateCamera();
+    }
+
+    function createLaser(c1, c2, axis) {
+        const link = document.createElement('div'); link.className = `laser-link axis-${axis}`;
+        let midX = (c1.x + c2.x) / 2, midY = (c1.y + c2.y) / 2, midZ = (c1.z + c2.z) / 2;
+        link.style.transform = `translate3D(calc(${midX} * var(--spacing)), calc(${midY} * var(--spacing)), calc(${midZ} * var(--spacing))) ${axis === 'z' ? 'rotateX(90deg)' : ''}`;
+        wrapper.appendChild(link); lasersData.push({ n1: c1.id, n2: c2.id, el: link, axis: axis });
+    }
+
+    let isDragging = false, startX = 0, startY = 0, prevX = 0, prevY = 0;
+    
+    scene.addEventListener('pointerdown', (e) => { 
+        if(isCinematic) return; isDragging = true; 
+        startX = e.clientX; startY = e.clientY; prevX = e.clientX; prevY = e.clientY; 
+    });
+    
+    scene.addEventListener('pointermove', (e) => { 
+        if(!isDragging || isCinematic) return; 
+        rotY += (e.clientX - prevX) * dragMultiplier; rotX -= (e.clientY - prevY) * dragMultiplier; 
+        updateCamera(); prevX = e.clientX; prevY = e.clientY; 
+    });
+    
+    window.addEventListener('pointercancel', () => { isDragging = false; });
+    
+    window.addEventListener('pointerup', (e) => {
+        isDragging = false; if(isCinematic) return;
+        let moveDist = Math.hypot(e.clientX - startX, e.clientY - startY);
+        if (moveDist < 10) {
+            let face = e.target.closest('.face');
+            if(face && playing) { 
+                let idx = parseInt(face.closest('.cube').getAttribute('data-index')); 
+                if(cubesData[idx].state === null) handleMove(idx); 
+            }
+        }
+    });
+
+    function updateCamera() { wrapper.style.transform = `scale(${zoomScale}) rotateX(${rotX}deg) rotateY(${rotY}deg) translate3D(calc(${targetCamX} * var(--spacing)), calc(${targetCamY} * var(--spacing)), calc(${targetCamZ} * var(--spacing)))`; }
+    function getShortestAngle(current, target) { let diff = (target - current) % 360; if (diff > 180) diff -= 360; if (diff < -180) diff += 360; return current + diff; }
+
+    function triggerCinematicZoom(cube, moveDuration, pauseDuration, onMid, onEnd) {
+        wrapper.style.transition = `transform ${moveDuration}ms cubic-bezier(0.25, 1, 0.2, 1)`; zoomScale = getZ('action'); targetCamX = -cube.x; targetCamY = -cube.y; targetCamZ = -cube.z; updateCamera();
+        setTimeout(() => { if(onMid) onMid(); }, moveDuration * 0.5); setTimeout(() => { if(onEnd) onEnd(); }, moveDuration + pauseDuration);
+    }
+    function resetCinematicZoom(duration, onEnd, restoreRot = false) {
+        wrapper.style.transition = `transform ${duration}ms cubic-bezier(0.25, 1, 0.3, 1)`; zoomScale = getZ('base'); targetCamX = 0; targetCamY = 0; targetCamZ = 0; if(restoreRot) { rotX = origRotX; rotY = origRotY; } updateCamera();
+        setTimeout(() => { wrapper.style.transition = 'none'; if(onEnd) onEnd(); }, duration + 100);
+    }
+
+    function shootPulse(fromCube, toCube, player, callback) {
+        const pulse = document.createElement('div'); pulse.className = `data-pulse pulse-${player.toLowerCase()}`;
+        if(!fromCube) { pulse.style.transform = `translate3d(0, 800px, 0)`; } else { pulse.style.transform = `translate3d(calc(${fromCube.x} * var(--spacing)), calc(${fromCube.y} * var(--spacing)), calc(${fromCube.z} * var(--spacing)))`; }
+        wrapper.appendChild(pulse); void pulse.offsetWidth; sysAudio.shoot(player === 'X'); 
+        pulse.style.transition = 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'; pulse.style.transform = `translate3d(calc(${toCube.x} * var(--spacing)), calc(${toCube.y} * var(--spacing)), calc(${toCube.z} * var(--spacing)))`;
+        setTimeout(() => { sysAudio.impact(); pulse.remove(); if(callback) callback(); }, 800);
+    }
+
+    function materializeCube(index, player) {
+        cubesData[index].state = player; cubesData[index].el.classList.add('filled', `state-${player.toLowerCase()}`); cubesData[index].el.innerHTML += player === 'X' ? coreXHTML : coreOHTML;
+        lasersData.forEach(l => { if(l.n1 === index || l.n2 === index) { if(cubesData[l.n1].state === player && cubesData[l.n2].state === player) l.el.classList.add(`has-${player.toLowerCase()}`); } });
+    }
+
+    function handleMove(index) {
+        if(!playing || isCinematic || gameAborted) return; playing = false; isCinematic = true; cubesData[index].state = 'X'; 
+        let fromNode = lastMoveX !== null ? cubesData[lastMoveX] : null; lastMoveX = index;
+        statusEl.textContent = t('statusInject'); statusEl.style.color = 'var(--ph-bright)'; cubesData[index].el.classList.add('drawing');
+        
+        triggerCinematicZoom(cubesData[index], 800, 1500, 
+            () => { 
+                if(gameAborted) return;
+                shootPulse(fromNode, cubesData[index], 'X', () => { 
+                    if(gameAborted) return;
+                    materializeCube(index, 'X'); recordMove(index, 'X'); 
+                }); 
+            },
+            () => {
+                if(gameAborted) return;
+                
+                if(checkWinFor('X')) { 
+                    updateBrainWeights(false); saveSolvedLevel(currentLevelData.hash); highlightWin('X');
+                    resetCinematicZoom(1000, () => endGame(t('winP1'), 'X'), false); return; 
+                }
+                
+                if (checkTacticalStalemate()) { resetCinematicZoom(1000, () => endGame(t('draw'), 'DRAW'), false); return; }
+                
+                let available = cubesData.filter(c => c.state === null);
+                if(available.length === 0) { resetCinematicZoom(1000, () => endGame(t('draw'), 'DRAW'), false); return; }
+                
+                statusEl.textContent = t('statusQuery'); statusEl.style.color = 'var(--ph-mid)'; 
+                setTimeout(() => { if(!gameAborted) processAI(); }, 300); 
+            }
+        );
+    }
+
+    // IA OTTIMIZZATA CON HASH MAP IN O(1)
+    function processAI() {
+        if(gameAborted) return;
+        let availableIds = cubesData.filter(c => c.state === null).map(c => c.id);
+        
+        if(availableIds.length === 0) {
+            resetCinematicZoom(1200, () => endGame(t('draw'), 'DRAW'), true);
+            return;
+        }
+
+        let bestMove = -1; 
+        
+        // Cerca Mossa Vincente AI
+        for(let idx of availableIds) { 
+            cubesData[idx].state = 'O'; 
+            if(checkWinFor('O')) bestMove = idx; 
+            cubesData[idx].state = null; 
+            if(bestMove !== -1) break;
+        }
+        
+        // Cerca Mossa Difensiva
+        if(bestMove === -1) { 
+            for(let idx of availableIds) { 
+                cubesData[idx].state = 'X'; 
+                if(checkWinFor('X')) bestMove = idx; 
+                cubesData[idx].state = null; 
+                if(bestMove !== -1) break;
+            } 
+        }
+        
+        // Consulta Database Storico
+        if(bestMove === -1) {
+            let stateKey = moveHistory.join('-'); let db = getLocalDB();
+            if(db[stateKey]) {
+                let highestWeight = -999;
+                for(let move in db[stateKey]) { let moveIdx = parseInt(move.replace('O', '')); if(availableIds.includes(moveIdx) && db[stateKey][move] > highestWeight) { highestWeight = db[stateKey][move]; bestMove = moveIdx; } }
+            }
+        }
+        
+        // Mossa Random di Fallback
+        if(bestMove === -1) bestMove = availableIds[Math.floor(Math.random() * availableIds.length)];
+
+        cubesData[bestMove].state = 'O'; let fromNode = lastMoveO !== null ? cubesData[lastMoveO] : null; lastMoveO = bestMove; let targetCube = cubesData[bestMove];
+        if(!targetCube) targetCube = cubesData[availableIds[0]];
+        
+        statusEl.textContent = t('statusCalc'); statusEl.style.color = 'var(--ph-mid)'; origRotX = rotX; origRotY = rotY;
+        let idealRotY = rotY; if(targetCube.x !== 0 || targetCube.z !== 0) idealRotY = getShortestAngle(rotY, -Math.atan2(targetCube.x, targetCube.z) * (180 / Math.PI));
+        let idealRotX = -10; if(targetCube.y < 0) idealRotX = -35; if(targetCube.y > 0) idealRotX = 35; idealRotX = getShortestAngle(rotX, idealRotX);
+        wrapper.style.transition = `transform 1200ms cubic-bezier(0.4, 0, 0.2, 1)`; rotX = idealRotX; rotY = idealRotY; updateCamera();
+
+        setTimeout(() => {
+            if(gameAborted) return;
+            statusEl.textContent = t('statusResp'); targetCube.el.classList.add('drawing');
+            triggerCinematicZoom(targetCube, 800, 1500, 
+                () => { 
+                    if(gameAborted) return;
+                    shootPulse(fromNode, targetCube, 'O', () => { 
+                        if(gameAborted) return;
+                        materializeCube(bestMove, 'O'); recordMove(bestMove, 'O'); 
+                    }); 
+                },
+                () => {
+                    if(gameAborted) return;
+                    
+                    if(checkWinFor('O')) { 
+                        updateBrainWeights(true); highlightWin('O');
+                        resetCinematicZoom(1000, () => endGame(t('winAI'), 'O'), true); return; 
+                    }
+                    if (checkTacticalStalemate()) { resetCinematicZoom(1000, () => endGame(t('draw'), 'DRAW'), true); return; }
+                    
+                    statusEl.textContent = 'STATUS: RIPRISTINO VISUALE...'; 
+                    resetCinematicZoom(1000, () => { 
+                        if(gameAborted) return;
+                        statusEl.textContent = t('statusReady'); statusEl.style.color = 'var(--ph-main)'; playing = true; isCinematic = false; 
+                    }, true);
+                }
+            );
+        }, 1200);
+    }
+
+    function highlightWin(player) {
+        const winTarget = currentLevelData.winCondition;
+        for (let cube of cubesData) {
+            if (cube.state !== player) continue;
+            for (let v of winVectors) {
+                let sequence = [cube]; let count = 1;
+                for (let step = 1; step < winTarget; step++) {
+                    let nextNode = cubeMap.get(`${cube.x + (v[0]*step)},${cube.y + (v[1]*step)},${cube.z + (v[2]*step)}`);
+                    if (nextNode && nextNode.state === player) { count++; sequence.push(nextNode); } else { break; }
+                }
+                if (count === winTarget) {
+                    sequence.forEach(node => { node.el.classList.add('win-node'); node.el.style.color = player === 'X' ? 'var(--ph-bright)' : 'var(--ph-mid)'; });
+                    return;
+                }
+            }
+        }
+    }
+
+    function endGame(msg, result) {
+        statusEl.textContent = msg; 
+        if (result === 'X') {
+            sysAudio.win();
+            statusEl.style.color = 'var(--ph-bright)';
+            document.getElementById('btn-next').style.display = 'block';
+        } else if (result === 'O') {
+            sysAudio.lose();
+            statusEl.style.color = 'var(--ph-mid)';
+            document.getElementById('btn-restart').style.display = 'block';
+        } else if (result === 'DRAW') {
+            sysAudio.glitch();
+            statusEl.style.color = '#ffff00'; 
+            document.getElementById('btn-next').style.display = 'block';
+            document.getElementById('btn-restart').style.display = 'block';
+        }
+    }
+
+    window.addEventListener('resize', () => { if (!isCinematic && playing) { zoomScale = getZ('base'); updateCamera(); } });
+</script>
+</body>
+</html>

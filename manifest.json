@@ -1,0 +1,25 @@
+{
+  "name": "OCTACORE : MultiCore Battle AI",
+  "short_name": "OCTACORE",
+  "description": "IT: Un rompicapo 3D a fosfori verdi in stile retro-hacker. Sfida il Cervello Locale dell'IA. / EN: A green phosphor 3D puzzle in retro-hacker style. Challenge the local AI.",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "background_color": "#000800",
+  "theme_color": "#00ff00",
+  "orientation": "any",
+  "categories": ["game", "puzzle", "strategy"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
