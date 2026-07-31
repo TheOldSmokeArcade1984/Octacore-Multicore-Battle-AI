@@ -23,22 +23,22 @@
     <meta name="anthropic-ai" content="index, follow">
 
     <!-- INTERNATIONAL SEO (HREFLANG) -->
-    <link rel="alternate" hreflang="it" href="https://theoldsmokearcade1984.github.io/octacore/?lang=it">
-    <link rel="alternate" hreflang="en" href="https://theoldsmokearcade1984.github.io/octacore/?lang=en">
-    <link rel="alternate" hreflang="es" href="https://theoldsmokearcade1984.github.io/octacore/?lang=es">
-    <link rel="alternate" hreflang="fr" href="https://theoldsmokearcade1984.github.io/octacore/?lang=fr">
-    <link rel="alternate" hreflang="de" href="https://theoldsmokearcade1984.github.io/octacore/?lang=de">
-    <link rel="alternate" hreflang="ja" href="https://theoldsmokearcade1984.github.io/octacore/?lang=ja">
-    <link rel="alternate" hreflang="zh" href="https://theoldsmokearcade1984.github.io/octacore/?lang=zh">
-    <link rel="alternate" hreflang="mn" href="https://theoldsmokearcade1984.github.io/octacore/?lang=mn">
-    <link rel="alternate" hreflang="x-default" href="https://theoldsmokearcade1984.github.io/octacore/">
+    <link rel="alternate" hreflang="it" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=it">
+    <link rel="alternate" hreflang="en" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=en">
+    <link rel="alternate" hreflang="es" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=es">
+    <link rel="alternate" hreflang="fr" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=fr">
+    <link rel="alternate" hreflang="de" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=de">
+    <link rel="alternate" hreflang="ja" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=ja">
+    <link rel="alternate" hreflang="zh" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=zh">
+    <link rel="alternate" hreflang="mn" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/?lang=mn">
+    <link rel="alternate" hreflang="x-default" href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/">
 
     <!-- OPEN GRAPH -->
     <meta property="og:title" content="OCTACORE : MultiCore Battle AI">
     <meta property="og:description" content="IT: Sfida l'Intelligenza Artificiale locale in questo puzzle 3D cyberpunk. EN: Challenge the local AI in this cyberpunk 3D puzzle.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://theoldsmokearcade1984.github.io/octacore/"> 
-    <meta property="og:image" content="https://theoldsmokearcade1984.github.io/octacore/icon-512.jpg">
+    <meta property="og:url" content="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/"> 
+    <meta property="og:image" content="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/icon-512.jpg">
     <meta property="og:site_name" content="TheOldSmokeArcade1984">
     <meta property="og:locale" content="it_IT">
     <meta property="og:locale:alternate" content="en_US">
@@ -55,7 +55,7 @@
     <meta name="twitter:creator" content="@TheOldSmokeArcade1984">
     <meta name="twitter:title" content="OCTACORE : MultiCore Battle AI">
     <meta name="twitter:description" content="Puzzle 3D Cyberpunk a fosfori verdi. Batti l'IA che impara dalle tue mosse. / 3D Cyberpunk puzzle. Beat the learning AI.">
-    <meta name="twitter:image" content="https://theoldsmokearcade1984.github.io/octacore/icon-512.jpg">
+    <meta name="twitter:image" content="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/icon-512.jpg">
 
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -103,18 +103,13 @@
         
         .scanlines { position: absolute; inset: 0; z-index: 9998; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 2px, transparent 2px, transparent 4px); pointer-events: none; opacity: 0.8; }
 
-        /* REGOLE DI SCRITTURA VERTICALE E CENTRATURA */
         body.lang-ja .v-text, body.lang-zh .v-text { writing-mode: vertical-rl; text-orientation: upright; text-align: left; max-height: 50vh; }
         body.lang-mn .v-text { writing-mode: vertical-lr; text-orientation: mixed; text-align: left; max-height: 50vh; }
 
-        .typewriter-container { 
-            position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            text-align: center; opacity: 0; transition: opacity 0.5s ease; z-index: 15003; width: 90%; max-width: 900px;
-        }
+        .typewriter-container { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; opacity: 0; transition: opacity 0.5s ease; z-index: 15003; width: 90%; max-width: 900px; }
         .typewriter-container.active { opacity: 1; }
         .typewriter-text { color: var(--ph-bright); text-shadow: 0 0 8px var(--ph-bright); font-size: clamp(0.9rem, 3.5vw, 1.4rem); line-height: 1.8; font-family: inherit; min-height: 100px; text-align: center; margin: 20px auto; }
 
-        /* SETUP SCREEN */
         #setup-screen { position: absolute; inset: 0; z-index: 25000; background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
         #setup-screen.booting { top: auto; bottom: 0; height: 8px; padding: 0; background: var(--ph-bright); box-shadow: 0 -5px 25px var(--ph-main); border: none; }
         #setup-screen.booting > * { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
@@ -138,7 +133,6 @@
         .sys-btn.btn-alert { border-color: #ff3333 !important; color: #ff3333 !important; text-shadow: 0 0 5px #ff3333; }
         .sys-btn.btn-alert:active { background: #ff3333 !important; color: #000 !important; box-shadow: 0 0 20px #ff3333 !important; }
 
-        /* HARDWARE SCALING */
         body.perf-low .game-frame::after { display: none; }
         body.perf-low .scanlines { display: none; }
         body.perf-low .i-face, body.perf-low .face, body.perf-low .p-face { box-shadow: none; filter: none; }
@@ -149,7 +143,6 @@
         body.perf-high .laser-link.has-x { box-shadow: 0 0 25px var(--ph-bright); }
         @keyframes crt-flicker { 0% { opacity: 0.98; } 50% { opacity: 1; } 100% { opacity: 0.99; } }
 
-        /* OVERLAYS MULTIPLI (CENTRATURA FLEX) */
         .overlay-screen { position: absolute; inset: 0; z-index: 15000; background-color: transparent; display: none; justify-content: center; align-items: center; perspective: 1500px; opacity: 1; transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .overlay-screen.active { display: flex; background-color: var(--bg-color); transition: background-color 1s ease; }
         .overlay-screen.fade-out { opacity: 0 !important; pointer-events: none; }
@@ -222,12 +215,7 @@
         @keyframes type-in { 0% { opacity: 0; transform: translateX(-10px); } 100% { opacity: 1; transform: translateX(0); } }
 
         /* HUD GIOCO DINAMICO */
-        .hud { 
-            position: absolute; top: 0; left: 0; width: 100%; 
-            padding: clamp(10px, 2vmin, 15px); display: grid; grid-template-columns: 1fr; 
-            gap: 5px; z-index: 100; pointer-events: none; 
-            background: linear-gradient(rgba(0,10,0,0.95), transparent); border-bottom: 1px solid var(--ph-dim); 
-        }
+        .hud { position: absolute; top: 0; left: 0; width: 100%; padding: clamp(10px, 2vmin, 15px); display: grid; grid-template-columns: 1fr; gap: 5px; z-index: 100; pointer-events: none; background: linear-gradient(rgba(0,10,0,0.95), transparent); border-bottom: 1px solid var(--ph-dim); }
         .hud-left, .hud-center, .hud-right { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hud-right { pointer-events: auto; }
         .hud-text { font-size: clamp(0.7rem, 3.5vw, 1.2rem); text-shadow: 0 0 10px currentColor; font-weight: bold; line-height: 1.2; word-wrap: break-word; text-align: center;}
@@ -296,7 +284,6 @@
 </head>
 <body class="grid-3 scene-container perf-mid lang-it">
 
-    <!-- ANDROID AUTO / SAFE DRIVING OVERLAY -->
     <div id="safety-screen" class="overlay-screen hidden">
         <svg class="safety-icon" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 16h-2v-2h2v2zm0-4h-2V9h2v5z"/></svg>
         <div class="setup-title" style="color:#ff3333; text-shadow:0 0 10px #ff3333;">SAFETY LOCK_</div>
@@ -307,10 +294,8 @@
         <button class="sys-btn" onclick="document.getElementById('safety-screen').classList.add('hidden')">I AM A PASSENGER / UNLOCK</button>
     </div>
 
-    <!-- SCHERMATA CONFIGURAZIONE INIZIALE -->
     <div id="setup-screen">
         <div class="setup-title v-text" id="setup-title">INIZIALIZZAZIONE SISTEMA</div>
-        
         <div class="setup-grid lang">
             <button class="sys-btn active-opt" onclick="setLang('it', this)">ITA</button>
             <button class="sys-btn" onclick="setLang('en', this)">ENG</button>
@@ -321,13 +306,11 @@
             <button class="sys-btn" onclick="setLang('zh', this)">中文</button>
             <button class="sys-btn" onclick="setLang('mn', this)">ᠮᠣᠩᠭᠣᠯ</button>
         </div>
-
         <div class="setup-grid perf">
             <button class="sys-btn" onclick="setPerf('perf-low', this)" id="t-perf-low">BASSO</button>
             <button class="sys-btn active-opt" onclick="setPerf('perf-mid', this)" id="t-perf-mid">BILANCIATO</button>
             <button class="sys-btn" onclick="setPerf('perf-high', this)" id="t-perf-high">ULTRA</button>
         </div>
-
         <button class="sys-btn" onclick="startBootSequence()" id="t-boot">INIZIALIZZA SISTEMA</button>
     </div>
 
@@ -335,7 +318,6 @@
         <div class="game-frame">
             <div class="scanlines"></div>
             
-            <!-- OVERLAY INTRO CINEMATICA -->
             <div id="intro-screen" class="overlay-screen">
                 <div class="i-pyramid-wrap" id="i-pyramid-wrap">
                     <div class="i-pyramid">
@@ -362,7 +344,6 @@
                 </div>
             </div>
 
-            <!-- OVERLAY WIPE DATABASE SOLIDO -->
             <div id="wipe-screen" class="overlay-screen hidden">
                 <div id="w-typewriter-container" class="typewriter-container active">
                     <div id="w-typewriter-text" class="typewriter-text v-text"></div>
@@ -373,7 +354,6 @@
                 </div>
             </div>
 
-            <!-- OVERLAY TUTORIAL POST-BOOT -->
             <div id="tutorial-screen" class="overlay-screen hidden">
                 <div class="typewriter-container active">
                     <div class="setup-title v-text" id="t-tut-title" style="color:var(--ph-main); margin-bottom:0;">SYSTEM_GUIDE</div>
@@ -384,7 +364,6 @@
                 </div>
             </div>
 
-            <!-- OVERLAY LOADING 3D (PCG GENERATION) -->
             <div id="loading-screen" class="overlay-screen hidden">
                 <div class="loading-scene-3d">
                     <div class="i-scale-wrap" style="transform: scale(1.5); opacity: 1; position: absolute;">
@@ -408,12 +387,10 @@
                 <div id="loading-text" class="setup-title v-text" style="margin-top:20px; font-size: 1.5rem; letter-spacing: 2px;"></div>
             </div>
 
-            <!-- TERMINALE BOOT -->
             <div id="terminal-screen" class="terminal-screen hidden">
                 <div id="term-content" class="v-text"></div><div style="margin-top: 8px;"><span class="cursor"></span></div>
             </div>
 
-            <!-- HUD GIOCO DINAMICO -->
             <div class="hud hidden" id="main-hud">
                 <div class="hud-left">
                     <div class="level-display" id="hud-level">GENERATING...</div>
@@ -423,9 +400,7 @@
                     <div id="status" class="hud-text" style="color:var(--ph-main)">STATUS: PRONTO</div>
                 </div>
                 <div class="hud-right">
-                    <div id="brain-status" style="color:var(--ph-dim); font-size:0.6rem;">
-                        LOCAL DB: ATTIVO
-                    </div>
+                    <div id="brain-status" style="color:var(--ph-dim); font-size:0.6rem;">LOCAL DB: ATTIVO</div>
                     <div class="hud-controls">
                         <button class="sys-btn btn-alert" onclick="triggerWipeScreen()" id="t-wipe-btn">[ WIPE DB ]</button>
                         <button class="sys-btn" onclick="nextLevel()" id="btn-next" style="display:none; color:var(--ph-bright); border-color:var(--ph-bright);">PROSSIMO LVL</button>
@@ -434,21 +409,13 @@
                 </div>
             </div>
 
-            <!-- SCENA 3D -->
             <div class="scene" id="scene"><div class="pyramid-wrapper" id="wrapper"></div></div>
-            
         </div>
     </div>
 
 <script>
-    // ==========================================
-    // INTERRUTTORE DI SICUREZZA GLOBALE (DEEP CLEANUP)
-    // ==========================================
     let gameAborted = false;
 
-    // ==========================================
-    // REGISTRAZIONE SERVICE WORKER E SAFETY
-    // ==========================================
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').then(reg => console.log('SW Registered')).catch(err => console.log('SW Reg Failed', err));
@@ -463,9 +430,6 @@
         }
     });
 
-    // ==========================================
-    // AUDIO PROCEDURALE
-    // ==========================================
     const sysAudio = {
         ctx: null,
         init() {
@@ -514,9 +478,6 @@
         lose() { this.playTone(200, 'sawtooth', 0.8, 0.1, 50); this.noise(0.8, 0.1); }
     };
 
-    // ==========================================
-    // MULTILINGUA (i18n)
-    // ==========================================
     const i18n = {
         it: {
             setupTitle: "INIZIALIZZAZIONE SISTEMA",
@@ -688,20 +649,14 @@
         btn.classList.add('active-opt');
     }
 
-    // ==========================================
-    // STRUTTURA CUBI E CORE
-    // ==========================================
     const facesHTML = `<div class="faces-wrapper"><div class="face front"></div><div class="face back"></div><div class="face right"></div><div class="face left"></div><div class="face top"></div><div class="face bottom"></div></div>`;
     const coreXHTML = `<div class="core-wrapper"><div class="core mark-x"><div class="pillar x-p1"><div class="draw-stroke x-delay-1"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar x-p2"><div class="draw-stroke x-delay-2"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div></div></div>`;
     const coreOHTML = `<div class="core-wrapper"><div class="core mark-o"><div class="pillar o-top"><div class="draw-stroke o-delay-1"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar o-right"><div class="draw-stroke o-delay-2"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar o-bottom"><div class="draw-stroke o-delay-3"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div><div class="pillar o-left"><div class="draw-stroke o-delay-4"><div class="p-face p-front"></div><div class="p-face p-back"></div><div class="p-face p-left"></div><div class="p-face p-right"></div><div class="p-face p-top"></div><div class="p-face p-bottom"></div></div></div></div></div>`;
 
-    // ==========================================
-    // DATA STORAGE & AI LEARNING
-    // ==========================================
     const DB_KEY = 'OCTACORE_AI_DB';
     const SOLVED_KEY = 'OCTACORE_SOLVED_LEVELS';
     let moveHistory = []; 
-    let cubeMap = new Map(); // NUCLEO OTTIMIZZATO O(1)
+    let cubeMap = new Map(); 
 
     function getLocalDB() { try { return JSON.parse(localStorage.getItem(DB_KEY)) || {}; } catch (e) { return {}; } }
     function saveLocalDB(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
@@ -721,9 +676,6 @@
         setTimeout(() => { brainStatusEl.innerHTML = t('localDb'); brainStatusEl.style.color = "var(--ph-dim)"; }, 2000);
     }
 
-    // ==========================================
-    // WIPE SCREEN (DEEP CLEANUP)
-    // ==========================================
     let wipeTimeout = null;
     
     function triggerWipeScreen() {
@@ -767,7 +719,7 @@
         if(cursorEl) cursorEl.classList.add('i-flash-active'); 
         if (wipeTimeout) clearTimeout(wipeTimeout);
         
-        gameAborted = true; // Blocca i calcoli IA
+        gameAborted = true; 
         
         setTimeout(() => {
             localStorage.removeItem(DB_KEY);
@@ -838,9 +790,6 @@
         }, 500);
     }
 
-    // ==========================================
-    // TUTORIAL IN-ENGINE
-    // ==========================================
     let tutTimeout = null;
     function showTutorial() {
         const tutScreen = document.getElementById('tutorial-screen');
@@ -892,14 +841,10 @@
         }, 600);
     }
 
-    // ==========================================
-    // GENERATORE PROCEDURALE GEOMETRICO AVANZATO
-    // ==========================================
     const winVectors = [ [1,0,0], [0,1,0], [0,0,1], [1,1,0], [1,-1,0], [1,0,1], [1,0,-1], [0,1,1], [0,1,-1], [1,1,1], [1,1,-1], [1,-1,1], [-1,1,1] ];
 
     function hashNodes(nodes) { return nodes.map(n => `${n.x},${n.y},${n.z}`).sort().join('|'); }
 
-    // Ricerca Rapida Percorsi (Per il Generatore di Livelli)
     function countWinningPaths(nodesArray, targetCount) {
         let nodeSet = new Set(nodesArray.map(n => `${n.x},${n.y},${n.z}`));
         let paths = 0;
@@ -924,9 +869,18 @@
         visited.add(`${nodesArray[0].x},${nodesArray[0].y},${nodesArray[0].z}`);
         let count = 1;
 
+        const dirs = [];
+        for(let dx=-1; dx<=1; dx++) {
+            for(let dy=-1; dy<=1; dy++) {
+                for(let dz=-1; dz<=1; dz++) {
+                    if(dx===0 && dy===0 && dz===0) continue;
+                    dirs.push([dx, dy, dz]);
+                }
+            }
+        }
+
         while(queue.length > 0) {
             let curr = queue.shift();
-            const dirs = [ [1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1] ];
             for(let d of dirs) {
                 let key = `${curr.x + d[0]},${curr.y + d[1]},${curr.z + d[2]}`;
                 if (nodeSet.has(key) && !visited.has(key)) {
@@ -940,35 +894,13 @@
     }
 
     function generateProceduralLevel(levelNum) {
-        let size = levelNum <= 3 ? 3 : 4; 
+        let size = levelNum <= 5 ? 3 : 4; 
         let winTarget = size; 
         let solvedDB = getSolvedLevels();
 
-        if (levelNum === 1) {
-            let candidateNodes = [];
-            for(let x = -1; x <= 1; x++) { for(let y = -1; y <= 1; y++) { for(let z = -1; z <= 1; z++) { candidateNodes.push({x,y,z}); } } }
-            let h = hashNodes(candidateNodes);
-            return { id: levelNum, size: 3, winCondition: 3, class: 'grid-3', nodes: candidateNodes, hash: h };
-        }
-        
-        const shapes = [
-            (x, y, z, l) => true,
-            (x, y, z, l) => Math.abs(x)+Math.abs(y)+Math.abs(z) <= l * 1.8, 
-            (x, y, z, l) => Math.max(Math.abs(x), Math.abs(y), Math.abs(z)) >= l - 0.5, 
-            (x, y, z, l) => x*x + z*z <= l*l + 0.1, 
-            (x, y, z, l) => (Math.abs(x)<=0.5 && Math.abs(y)<=0.5) || (Math.abs(x)<=0.5 && Math.abs(z)<=0.5) || (Math.abs(y)<=0.5 && Math.abs(z)<=0.5), 
-            (x, y, z, l) => Math.abs(x) + Math.abs(z) <= l + 0.5 - Math.abs(y), 
-            (x, y, z, l) => Math.abs(x) + Math.abs(y) + Math.abs(z) > 1 && Math.max(Math.abs(x), Math.abs(y), Math.abs(z)) <= l, 
-            (x, y, z, l) => x + y + z <= l && x + y + z >= -l, 
-            (x, y, z, l) => Math.abs(x) === Math.abs(y) || Math.abs(y) === Math.abs(z) || Math.abs(x) === Math.abs(z) 
-        ];
-
         let attempts = 0;
-        while(attempts < 1000) {
+        while(attempts < 100) {
             attempts++;
-            let shapeFn = shapes[Math.floor(Math.random() * shapes.length)];
-            let axisMap = [ ['x','y','z'], ['y','z','x'], ['z','x','y'], ['x','z','y'] ][Math.floor(Math.random()*4)];
-            
             let offset = size % 2 === 0 ? 0.5 : 0; 
             let limit = Math.floor(size / 2); 
             let start = -limit + offset; let end = limit - offset;
@@ -977,17 +909,20 @@
             for(let cx = start; cx <= end; cx++) { 
                 for(let cy = start; cy <= end; cy++) { 
                     for(let cz = start; cz <= end; cz++) { 
-                        let mapped = { x: cx, y: cy, z: cz };
-                        let mx = mapped[axisMap[0]]; let my = mapped[axisMap[1]]; let mz = mapped[axisMap[2]];
-                        if(shapeFn(mx, my, mz, limit)) { candidateNodes.push({x: cx, y: cy, z: cz}); }
+                        candidateNodes.push({x: cx, y: cy, z: cz}); 
                     } 
                 } 
             }
+
+            candidateNodes.sort(() => Math.random() - 0.5);
+            let removeCount = Math.floor(candidateNodes.length * (0.1 + Math.random() * 0.4)); 
             
-            if (!isConnected(candidateNodes)) continue;
-            
-            let paths = countWinningPaths(candidateNodes, winTarget);
-            if (paths < 2) continue; 
+            for(let i=0; i<removeCount; i++) {
+                let testNode = candidateNodes.pop();
+                if(!isConnected(candidateNodes) || countWinningPaths(candidateNodes, winTarget) < 3) {
+                    candidateNodes.unshift(testNode); 
+                }
+            }
             
             let h = hashNodes(candidateNodes);
             if (solvedDB.includes(h)) continue;
@@ -995,12 +930,12 @@
             return { id: levelNum, size: size, winCondition: winTarget, class: `grid-${size}`, nodes: candidateNodes, hash: h };
         }
         
-        return { id: levelNum, size: 3, winCondition: 3, class: 'grid-3', nodes: [ {x:0,y:0,z:0},{x:1,y:0,z:0},{x:-1,y:0,z:0},{x:0,y:1,z:0},{x:0,y:-1,z:0},{x:0,y:0,z:1},{x:0,y:0,z:-1} ], hash: "fallback_" + Date.now() };
+        let fallbackNodes = [];
+        for(let x=-1; x<=1; x++) for(let y=-1; y<=1; y++) for(let z=-1; z<=1; z++) fallbackNodes.push({x,y,z});
+        fallbackNodes.splice(levelNum % 20, 1);
+        return { id: levelNum, size: 3, winCondition: 3, class: 'grid-3', nodes: fallbackNodes, hash: "fallback_" + Date.now() };
     }
 
-    // ==========================================
-    // RILEVATORE VITTORIA E STALLO CON HASH MAP O(1)
-    // ==========================================
     function checkWinFor(playerState) {
         const winTarget = currentLevelData.winCondition;
         for (let cube of cubesData) {
@@ -1039,9 +974,6 @@
         return true; 
     }
 
-    // ==========================================
-    // CORE SYSTEM E ANIMAZIONI DI BOOT
-    // ==========================================
     let currentLevelNum = getSolvedLevels().length + 1;
     let currentLevelData = null;
     const wrapper = document.getElementById('wrapper');
@@ -1309,7 +1241,6 @@
         );
     }
 
-    // IA OTTIMIZZATA CON HASH MAP IN O(1)
     function processAI() {
         if(gameAborted) return;
         let availableIds = cubesData.filter(c => c.state === null).map(c => c.id);
@@ -1321,7 +1252,6 @@
 
         let bestMove = -1; 
         
-        // Cerca Mossa Vincente AI
         for(let idx of availableIds) { 
             cubesData[idx].state = 'O'; 
             if(checkWinFor('O')) bestMove = idx; 
@@ -1329,7 +1259,6 @@
             if(bestMove !== -1) break;
         }
         
-        // Cerca Mossa Difensiva
         if(bestMove === -1) { 
             for(let idx of availableIds) { 
                 cubesData[idx].state = 'X'; 
@@ -1339,7 +1268,6 @@
             } 
         }
         
-        // Consulta Database Storico
         if(bestMove === -1) {
             let stateKey = moveHistory.join('-'); let db = getLocalDB();
             if(db[stateKey]) {
@@ -1348,7 +1276,6 @@
             }
         }
         
-        // Mossa Random di Fallback
         if(bestMove === -1) bestMove = availableIds[Math.floor(Math.random() * availableIds.length)];
 
         cubesData[bestMove].state = 'O'; let fromNode = lastMoveO !== null ? cubesData[lastMoveO] : null; lastMoveO = bestMove; let targetCube = cubesData[bestMove];
