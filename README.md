@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA" />
   </p>
 
-  <h3><a href="https://theoldsmokearcade1984.github.io/octacore/" target="_blank">🕹️ PLAY NOW / GIOCA ORA</a></h3>
+  <h3><a href="[https://theoldsmokearcade1984.github.io/octacore/](https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/)" target="_blank">🕹️ PLAY NOW / GIOCA ORA</a></h3>
 
 </div>
 
