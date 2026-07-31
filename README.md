@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="icon-512.jpg" alt="OCTACORE Logo" width="200" style="border-radius: 20px; box-shadow: 0 0 20px #00ff00;">
+  <img src="icon-512.png" alt="OCTACORE Logo" width="200" style="border-radius: 20px; box-shadow: 0 0 20px #00ff00;">
 
   <h1>OCTACORE : MultiCore Battle AI</h1>
 
@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA" />
   </p>
 
-  <h3><a href="[https://theoldsmokearcade1984.github.io/octacore/](https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/)" target="_blank">🕹️ PLAY NOW / GIOCA ORA</a></h3>
+  <h3><a href="https://theoldsmokearcade1984.github.io/Octacore-Multicore-Battle-AI/" target="_blank">🕹️ PLAY NOW / GIOCA ORA</a></h3>
 
 </div>
 
